@@ -66,6 +66,40 @@
   width: 100%;
 }
 
+.social-media {
+  font-size: 1.5em;
+}
+
+.facebook {
+  columns: #3b5998;
+}
+
+.twitter {
+  columns: #1da1f2;
+}
+
+.googleplus {
+  columns: #db4437;
+}
+
+.linkedin {
+  columns: #007bb5;
+}
+
+.instagram {
+  columns: #c32aa3;
+}
+
+hr {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  /*border-color: #db4437;*/
+  border: 0;
+  height: 2px;
+  background-image: linear-gradient(to right, rgba(219,68,55, 0), rgba(219,68,55, 0.75), rgba(219,68,55, 0));
+
+}
 
 
 
