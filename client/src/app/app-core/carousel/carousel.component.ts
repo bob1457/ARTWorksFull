@@ -10,11 +10,23 @@ export class CarouselComponent implements OnInit {
   constructor() { }
 
   imageUrls = [
-    { url: 'https://cdn.vox-cdn.com/uploads/chorus_image/image/56748793/dbohn_170625_1801_0018.0.0.jpg', caption: 'The first slide', href: '#config' },
-    { url: 'https://cdn.vox-cdn.com/uploads/chorus_asset/file/9278671/jbareham_170917_2000_0124.jpg' },
-    { url: 'https://cdn.vox-cdn.com/uploads/chorus_image/image/56789263/akrales_170919_1976_0104.0.jpg', caption: 'Apple TV', href: 'https://www.apple.com/' },
-    'https://cdn.vox-cdn.com/uploads/chorus_image/image/56674755/mr_pb_is_the_best.0.jpg'
+    { url: '../../../assets/images/1.jpg', caption: 'The first slide', href: '#config' },
+    { url: '../../../assets/images/2.jpg' },
+    { url: '../../../assets/images/3.jpg' },
+    { url: '../../../assets/images/4.jpg' },
+    { url: '../../../assets/images/5.jpg', caption: 'Apple TV', href: 'https://www.apple.com/' },
+    '../../../assets/images/6.jpg'
     ];
+    /*
+
+    { url: '../../../assets/images/1.jpg'}, // caption: 'The first slide', href: '#config' },
+    { url: '../../../assets/images/2.jpg' },
+    { url: '../../../assets/images/3.jpg'},// caption: 'Apple TV', href: 'https://www.apple.com/' },
+    { url: '../../../assets/images/4.jpg'},
+    { url: '../../../assets/images/6.jpg'},
+    './../../assets/images/5.jpg.jpg'
+
+     */
     height: string = '400px';
     minHeight: string;
     arrowSize: string = '30px';
