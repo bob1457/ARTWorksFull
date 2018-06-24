@@ -1,0 +1,77 @@
+.about-title {
+    position: relative;
+    margin-bottom: 3em;
+}
+
+
+.about-title h1 {
+    font-size: 2.5em;
+    color:#333;
+}
+
+.about-banner {
+    /* background-color: blueviolet;margin-top: -22px;*/
+    height: 15em;
+    background: url('../../assets/images/banner-painting.jpg') no-repeat;
+    background-size: cover;
+}
+
+.banner-text {
+    width: 30%;
+    padding-top: 2em;
+    margin-left: 2em;
+    padding-bottom: 10em;
+}
+
+.content {
+    width: 70%;
+    margin-left: 2em;
+    margin-top: 2em;
+    line-height: 1.5;
+}
+
+
+.about-slogan {
+    text-align: center;
+}
+
+.about-header-image {
+
+}
+
+.about-card img {
+    /*border-radius: 50%;*/
+}
+
+.about-card {
+    width: 60%;
+    text-align: center; margin-left: auto; margin-right: auto;
+}
+
+.mat-card-header {
+  height: 85px;
+}
+
+.card-header-image {
+  align-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card-header-image img {
+  margin-left: 1em;
+}
+
+.mat-card-avatar {
+  width: 100%;
+}
+
+
+
+
+/* CSS Media Queries
+@media only screen and (max-width: 600px) {
+    body {
+        background-color: lightblue;
+    }
+}*/

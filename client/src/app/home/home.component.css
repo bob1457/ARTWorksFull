@@ -1,0 +1,49 @@
+
+
+.bg {
+  background-image: url('../../assets/images/bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+}
+
+
+.home_toolbar {
+  background-color: transparent;
+  color:white;
+  font-weight: bold;
+}
+
+
+.logo {
+  margin-top: 1.5em;
+}
+
+.enterlink {
+  text-align:center; 
+  margin-top: 5em;
+  padding: 1em;
+  border: 3px solid white;
+  font-weight: bold;
+  color: bisque;
+  font-size: 1.5em;
+}
+
+.home {
+  text-align:center; 
+  margin-top: 5em;
+}
+
+.home-text {
+  margin-left: auto;
+  margin-right: auto; 
+  margin-top: 3.5em;
+  width: 30%;
+  color:whitesmoke;
+  background-color: rgb(236, 96, 13, .25);
+
+}
+
+
+
