@@ -10,6 +10,7 @@ import { CarouselComponent } from '../app-core/carousel/carousel.component';
 import { ImgListComponent } from './img-list/img-list.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { GalleryWelcomeComponent } from './gallery-welcome/gallery-welcome.component';
+import { GetStartedComponent } from './get-started/get-started.component';
 
 
 
@@ -17,13 +18,17 @@ import { GalleryWelcomeComponent } from './gallery-welcome/gallery-welcome.compo
   imports: [
     CommonModule,
     AppCoreModule,
-    AppMaterialModule,
-    GalleryRoutingModule,
+    AppMaterialModule,    
     SlideshowModule,
-    FlexLayoutModule
-    
+    FlexLayoutModule,
+    GalleryRoutingModule
   ],
-  declarations: [GalleryHomeComponent, CarouselComponent, ImgListComponent, GalleryWelcomeComponent], // , ToolbarComponent],
+  declarations: [GalleryHomeComponent, 
+    CarouselComponent, 
+    ImgListComponent, 
+    GalleryWelcomeComponent, 
+    GetStartedComponent
+  ], // , ToolbarComponent],
   exports: [
     GalleryHomeComponent,
     SlideshowModule

@@ -5,6 +5,7 @@ import { AppMaterialModule } from '../app-material/app-material.module';
 import { RouterModule } from '@angular/router';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { CarouselComponent } from './carousel/carousel.component';
+import { BannerComponent } from './banner/banner.component';
 
 
 

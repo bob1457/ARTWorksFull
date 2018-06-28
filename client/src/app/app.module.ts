@@ -15,6 +15,7 @@ import { LoginComponent } from './account/login/login.component';
 import { SignupComponent } from './account/signup/signup.component';
 import { ProfileComponent } from './account/profile/profile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BannerComponent } from './app-core/banner/banner.component';
 
 // import {SlideshowModule} from 'ng-simple-slideshow';
 
@@ -26,7 +27,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     // ToolbarComponent,
     LoginComponent,
     SignupComponent,
-    ProfileComponent
+    ProfileComponent,
+    BannerComponent
   ],
   imports: [
     BrowserModule,
@@ -36,8 +38,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppMaterialModule,
     AppCoreModule,
     GalleryModule,
-    AppRoutingModule, // Remember put this in theLAST line
-    FlexLayoutModule// ,
+    FlexLayoutModule,    
+    AppRoutingModule // Remember put this in theLAST line
+    // ,
     // SlideshowModule
   ],
   providers: [],

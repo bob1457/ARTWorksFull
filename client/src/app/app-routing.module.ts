@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SignupComponent } from './account/signup/signup.component';
 import { LoginComponent } from './account/login/login.component';
 import { ProfileComponent } from './account/profile/profile.component';
+import { GetStartedComponent } from './gallery/get-started/get-started.component';
 
 
 
@@ -17,7 +18,12 @@ const routes: Routes = [
       {path: 'signup', component: SignupComponent}
     ]
   },
-  { path: 'gallery', component: GalleryHomeComponent },
+  /**/{ path: 'gallery', component: GalleryHomeComponent,
+    children: [
+      { path: '', redirectTo: 'gallery', pathMatch: 'full' }     
+    ] 
+  }, 
+  { path: 'get-started', component: GetStartedComponent },
   { path: 'about', component: AboutComponent },
   { path: '**', component: HomeComponent}
 ];

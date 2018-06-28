@@ -100,8 +100,9 @@ hr {
   background-image: linear-gradient(to right, rgba(219,68,55, 0), rgba(219,68,55, 0.75), rgba(219,68,55, 0));
 
 }
-
-
+.about-card {
+  background-color: #fbe8de;
+}
 
 /* CSS Media Queries
 @media only screen and (max-width: 600px) {
