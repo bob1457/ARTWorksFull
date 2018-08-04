@@ -5,7 +5,12 @@ html body {
     margin: 0;
     padding: 0;
     background-color: rgba(255, 85, 85, 0.15);
-    font-family: Arial, 'Arial Narrow', sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
+}
+
+img {
+    /*width:100%;
+    height: auto;*/
 }
 
 a:link {

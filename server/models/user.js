@@ -21,6 +21,10 @@ const UserSchema = new Schema({
         type:String,
         enum: ["admin", "member"]
     },*/
+    birthyear: {
+        type:Number,
+        trim:true
+    },
     password: {
         type:String,        
         required:true
@@ -38,7 +42,8 @@ const UserSchema = new Schema({
     role: {
         type:String,
         enum: ["parent", "child"]
-    },        
+    },
+            
     //address: [AddressSchema], 
     street:{
         type: String        

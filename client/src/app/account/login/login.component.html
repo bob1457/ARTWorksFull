@@ -1,5 +1,37 @@
-<section>
-
-</section>
-
+<div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" >
+        <div fxFlex="25%"></div>
+        <div class="" fxFlex="50%">
+            <mat-card class="signup-card" style="margin-left: 10px;margin-right: 10px;">
+                <mat-card-header>
+                    <div mat-card-avatar class="signup-header-image">
+                      <img src="../../../assets/images/login.png" >
+                    </div>
+                    <mat-card-title style="margin-left: 25px;">Login</mat-card-title>
+                    <mat-card-subtitle style="margin-left: 25px;">Login to your account</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" #f="ngForm" (ngSubmit)="onSubmit(f)" class="signup-form">
+                        <mat-form-field class="signup-full-width">
+                          <input type="email" matInput placeholder="Your email" ngModel name="email" #emailInput="ngModel" email required >
+                          <mat-hint>Use your email to login</mat-hint>
+                          <mat-error *ngIf="emailInput.hasError('required')">Email is required</mat-error>
+                          
+                        </mat-form-field>
+      
+                        <mat-form-field class="signup-full-width" >
+                          <input type="password" matInput placeholder="Your password" ngModel name ="password" required>
+                          
+                        </mat-form-field>
+                        
+                        
+                        <button type="submit" mat-raised-button color="primary" [disabled]="f.invalid">LOGIN</button>
+                      </form>
+                </mat-card-content>
+              </mat-card>
+        </div>
+        <div fxFlex="25%"></div>
+      
+      
+      
+      </div>
 

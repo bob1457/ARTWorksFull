@@ -6,13 +6,13 @@ Major application code
 'use strict';
 
 var express = require("express");
-var path = require('path');
-var mongoose = require('mongoose');
+//var path = require('path');
+//var mongoose = require('mongoose');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 //var multer = require('multer');
 //var upload = multer();
-var jsonwebtoken = require("jsonwebtoken");
+//var jsonwebtoken = require("jsonwebtoken");
 var app = express();
 
 //var multer = require('multer');

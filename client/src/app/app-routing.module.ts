@@ -7,15 +7,16 @@ import { SignupComponent } from './account/signup/signup.component';
 import { LoginComponent } from './account/login/login.component';
 import { ProfileComponent } from './account/profile/profile.component';
 import { GetStartedComponent } from './gallery/get-started/get-started.component';
-
+import { AccountHomeComponent } from './account/account-home/account-home.component';
 
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'account', component: ProfileComponent,
+  { path: 'account', component: AccountHomeComponent,
     children: [
       {path: 'login', component: LoginComponent},
-      {path: 'signup', component: SignupComponent}
+      {path: 'signup', component: SignupComponent},
+      {path: 'profile', component: ProfileComponent}
     ]
   },
   /**/{ path: 'gallery', component: GalleryHomeComponent,

@@ -11,10 +11,25 @@ exports.signup = (req, res, next) => {
     
     const email = req.body.email;
     const username = req.body.username;
-    const password = req.body.password;    
-    const role = "parent";
+    const password = req.body.password; 
+    const birthyear = req.body.birthyear;   
+    var role = "";
+    var dt = new Date();
+    var currentyear = dt.getFullYear();
+    var age = currentyear - birthyear;
+    //console.log(age);
 
-    if ( !email || !username || !password ) {
+    if(age > 19 ) {
+        role = "parent";
+    } else {
+        role = "child";
+    }
+
+    //console.log(role);
+    
+
+    if ( !email || !username || !password || !birthyear ) {
+        
         return res.status(422).json({ success: false, message: 'Posted data is not correct or incomplete.'});
     }
 
@@ -35,7 +50,8 @@ exports.signup = (req, res, next) => {
             //lastname: lastname,
             email: email,
             username: username,
-            password: password,            
+            password: password, 
+            birthyear: birthyear,           
             role: role,
             createdOn: new Date()
         });
