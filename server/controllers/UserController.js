@@ -1,46 +1,46 @@
 var path = require('path'),
     User = require('../models/user'), // import the user from the model
-    multer = require('multer');
-    user = require('../models/user'),
+    multer = require('multer'),
+    // user = require('../models/user'),
     jwt = require('jsonwebtoken'),
     config = require('../config');
 
 
 
 exports.signup = (req, res, next) => {
-    
+
     const email = req.body.email;
     const username = req.body.username;
-    const password = req.body.password; 
-    const birthyear = req.body.birthyear;   
+    const password = req.body.password;
+    const birthyear = req.body.birthyear;
     var role = "";
     var dt = new Date();
     var currentyear = dt.getFullYear();
     var age = currentyear - birthyear;
     //console.log(age);
 
-    if(age > 19 ) {
+    if (age > 19) {
         role = "parent";
     } else {
         role = "child";
     }
 
     //console.log(role);
-    
 
-    if ( !email || !username || !password || !birthyear ) {
-        
-        return res.status(422).json({ success: false, message: 'Posted data is not correct or incomplete.'});
+
+    if (!email || !username || !password || !birthyear) {
+
+        return res.status(422).json({ success: false, message: 'Posted data is not correct or incomplete.' });
     }
 
     User.findOne({ username: username }, function(err, existingUser) {
-        if(err){ res.status(400).json({ success: false, message:'Error processing request '+ err}); }
+        if (err) { res.status(400).json({ success: false, message: 'Error processing request ' + err }); }
 
         // If user is not unique, return error
         if (existingUser) {
             return res.status(201).json({
                 success: false,
-		        message: 'Username already exists.'
+                message: 'Username already exists.'
             });
         }
 
@@ -50,79 +50,79 @@ exports.signup = (req, res, next) => {
             //lastname: lastname,
             email: email,
             username: username,
-            password: password, 
-            birthyear: birthyear,           
+            password: password,
+            birthyear: birthyear,
             role: role,
             createdOn: new Date()
         });
 
         oUser.save(function(err, oUser) {
-            if(err){ res.status(400).json({ success: false, message:'Error processing request '+ err}); }
-        
-                res.status(201).json({
+            if (err) { res.status(400).json({ success: false, message: 'Error processing request ' + err }); }
+
+            res.status(201).json({
                 success: true,
                 message: 'User created successfully, please login to access your account.',
                 registeredUser: oUser
             });
 
-            
-        });        
+
+        });
 
     });
 };
 
 
-exports.login = function(req, res, next){
+exports.login = function(req, res, next) {
     // find the user
     User.findOne({ username: req.body.username }, function(err, user) {
-		if(err){ res.status(400).json({ success: false, message:'Error processing request '+ err}); }
+        if (err) { res.status(400).json({ success: false, message: 'Error processing request ' + err }); }
 
-		if (!user) {
-			res.status(201).json({ success: false, message: 'Authentication failed. Incorrect login credentials.' });
-		}else if (user) {
-			user.comparePassword(req.body.password, function (err, isMatch) {
+        if (!user) {
+            res.status(201).json({ success: false, message: 'Authentication failed. Incorrect login credentials.' });
+        } else if (user) {
+            user.comparePassword(req.body.password, function(err, isMatch) {
                 if (isMatch && !err) {
                     var token = jwt.sign(user.toJSON(), config.secret, {
-			        expiresIn: config.tokenexp
-		    });
-                    
+                        expiresIn: config.tokenexp
+                    });
+
                     let last_login = user.lastlogin;
-                    
+
                     // login success update last login
                     user.lastlogin = new Date();
-                
-                    
+
+
                     user.save(function(err) {
-                        if(err){ res.status(400).json({ success: false, message:'Error processing request '+ err}); }
+                        if (err) { res.status(400).json({ success: false, message: 'Error processing request ' + err }); }
 
                         res.status(201).json({
                             success: true,
-                            message: {'userid': user._id, 'username': user.username, 'firstname': user.firstname, 'lastlogin': last_login},
+                            message: { 'userid': user._id, 'username': user.username, 'firstname': user.firstname, 'lastlogin': last_login },
                             token: token
                         });
                     });
                 } else {
                     res.status(201).json({ success: false, message: 'Incorrect login credentials.' });
                 }
-            });	
-		}
-	});
+            });
+        }
+    });
 };
 
-exports.users = function(req, res, next){
-    User.find({}, function (err, users) {
+exports.users = function(req, res, next) {
+    User.find({}, function(err, users) {
         if (err) return res.status(500).send("There was a problem finding the users.");
         res.status(200).send(users);
     })
 };
 
-exports.getuserDetails = function(req, res, next){
-    User.find({_id:req.params.id}).exec(function(err, user){
-        if(err){ res.status(400).json({ success: false, message: 'Error processing request '+ err}); }
-            res.status(201).json({
-            success: true, 
+exports.getuserDetails = function(req, res, next) {
+    User.find({ _id: req.params.id }).exec(function(err, user) {
+        if (err) { res.status(400).json({ success: false, message: 'Error processing request ' + err }); }
+        res.status(201).json({
+            success: true,
             data: user
-	    });
+        });
     });
 };
 
@@ -148,12 +148,12 @@ exports.updateUser = (req, res, next) => {
         country: req.body.country
     }    
     */
-    
-    User.findById(userid).exec(function(err, user){
-        if(err){ res.status(400).json({ success: false, message: 'Error processing request '+ err }); }
-        if(user){
+
+    User.findById(userid).exec(function(err, user) {
+        if (err) { res.status(400).json({ success: false, message: 'Error processing request ' + err }); }
+        if (user) {
             user.firstname = firstname;
-			user.lastname = lastname;
+            user.lastname = lastname;
             user.email = email;
             user.telephone = telephone;
             user.street = street;
@@ -165,12 +165,12 @@ exports.updateUser = (req, res, next) => {
             //user.address.push(address);
         }
 
-        user.save(function(err){
-            if(err){ res.status(400).json({ success: false, message:'Error processing request '+ err }); }
+        user.save(function(err) {
+            if (err) { res.status(400).json({ success: false, message: 'Error processing request ' + err }); }
             res.status(201).json({
-				success: true,
-				message: 'User profile updated successfully'
-			});
+                success: true,
+                message: 'User profile updated successfully'
+            });
         });
     });
 
@@ -180,19 +180,19 @@ exports.updateUser = (req, res, next) => {
 exports.uploadAvatar = (req, res, next) => {
 
     // File Upload
-    var storage =   multer.diskStorage({
-        destination: function (req, file, callback) {
-        callback(null, './content/avatars'); // This location must exist, if not, uploading will fail. Create the folder before testing
+    var storage = multer.diskStorage({
+        destination: function(req, file, callback) {
+            callback(null, './content/avatars'); // This location must exist, if not, uploading will fail. Create the folder before testing
         },
-        filename: function (req, file, callback) {
-        callback(null, file.fieldname + '-' + Date.now() + "." + path.extname(file.originalname));
+        filename: function(req, file, callback) {
+            callback(null, file.fieldname + '-' + Date.now() + "." + path.extname(file.originalname));
         }
     });
 
-    var upload = multer({ storage : storage}).single('userPhoto');
+    var upload = multer({ storage: storage }).single('userPhoto');
 
-    upload(req,res,function(err) {
-        if(err) {
+    upload(req, res, function(err) {
+        if (err) {
             return res.end("Error uploading file.");
         }
         console.log(req.file);
@@ -200,4 +200,3 @@ exports.uploadAvatar = (req, res, next) => {
         res.end("File is uploaded");
     });
 };
-
