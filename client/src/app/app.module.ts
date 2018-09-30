@@ -11,12 +11,13 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 // import { ToolbarComponent } from './app-core/toolbar/toolbar.component';
-import { LoginComponent } from './account/login/login.component';
-import { SignupComponent } from './account/signup/signup.component';
-import { ProfileComponent } from './account/profile/profile.component';
+import { LoginComponent } from './user/login/login.component';
+import { SignupComponent } from './user/signup/signup.component';
+import { ProfileComponent } from './user/profile/profile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BannerComponent } from './app-core/banner/banner.component';
-import { AccountHomeComponent } from './account/account-home/account-home.component';
+
+import { UserModule } from './user/user.module';
 
 // import {SlideshowModule} from 'ng-simple-slideshow';
 
@@ -26,11 +27,11 @@ import { AccountHomeComponent } from './account/account-home/account-home.compon
     HomeComponent,
     AboutComponent,
     // ToolbarComponent,
-    LoginComponent,
-    SignupComponent,
-    ProfileComponent,
-    BannerComponent,
-    AccountHomeComponent
+    //LoginComponent,
+    //SignupComponent,
+    //ProfileComponent,
+    BannerComponent//,
+    //AccountHomeComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +41,7 @@ import { AccountHomeComponent } from './account/account-home/account-home.compon
     AppMaterialModule,
     AppCoreModule,
     GalleryModule,
+    UserModule,
     FlexLayoutModule,    
     AppRoutingModule // Remember put this in theLAST line
     // ,

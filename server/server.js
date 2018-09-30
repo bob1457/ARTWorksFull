@@ -11,11 +11,11 @@ Server only contains minimum code to start the web server listener, others are c
 //var multer = require('multer');
 // var app = express();
 var app = require('./app');
-var config = require('./config');
+var config = require('./config/config');
 
 var port = process.env.PORT || config.serverport;
 
 
-app.listen(port,() => {
-    console.log("RESTFul api server running on localhost at port 3000");
+app.listen(port, () => {
+    console.log(`RESTFul api server running on localhost at port ${port}`);
 });

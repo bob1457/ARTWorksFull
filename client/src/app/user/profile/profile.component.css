@@ -2,19 +2,18 @@ mat-form-field {
     width: 300px;
     margin-left: 10px;
     margin-right: 10px;
-  }
-  
-  signup-card {
+}
+
+signup-card {
     max-width: 300px;
-  }
-  
-  .signup-header-image img {
+}
+
+.signup-header-image img {
     border-radius: 50%;
     margin-right: 25px;
-  }
-  
-  :host-context .mat-card-header-text {
+}
+
+ :host-context .mat-card-header-text {
     position: relative;
     margin-left: 25px;
-  }
-  
+}

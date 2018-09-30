@@ -2,8 +2,9 @@ var path = require('path'),
     User = require('../models/user'), // import the user from the model
     multer = require('multer'),
     // user = require('../models/user'),
+    // userService = require('../services/user.service');
     jwt = require('jsonwebtoken'),
-    config = require('../config');
+    config = require('../config/config');
 
 
 
@@ -17,7 +18,7 @@ exports.signup = (req, res, next) => {
     var dt = new Date();
     var currentyear = dt.getFullYear();
     var age = currentyear - birthyear;
-    //console.log(age);
+    //console.log(email);
 
     if (age > 19) {
         role = "parent";
@@ -33,6 +34,9 @@ exports.signup = (req, res, next) => {
         return res.status(422).json({ success: false, message: 'Posted data is not correct or incomplete.' });
     }
 
+    /*
+        userService.signup(email, username, password, birthyear, role);
+    */
     User.findOne({ username: username }, function(err, existingUser) {
         if (err) { res.status(400).json({ success: false, message: 'Error processing request ' + err }); }
 

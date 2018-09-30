@@ -18,11 +18,11 @@ var app = express();
 //var multer = require('multer');
 
 // Connect to mongodb
-require('./db'); // or let db = required('./db); if db is needed in this file
+require('./config/db'); // or let db = required('./db); if db is needed in this file
 
 // include body-parser for parsing input data - bodyparser caused file upload failure: parsing json error - to be investigated, the following works!!!
 
-app.use(bodyParser.urlencoded({ extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 //app.use(multer);
 //app.use(upload.array());
@@ -32,7 +32,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 
 // enable CORS from client-side
-app.use(function(req, res, next){
+app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", 'PUT, GET, POST, DELETE, OPTIONS');
     res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials");
@@ -46,23 +46,16 @@ API Route Definition
 
 ******************************************************************************** */
 
-// var router = express.Router();
+//var router = express.Router();
+
+/****************************************************************/
+// All webapi routes - endpoints
+/****************************************************************/
 var router = require('./apiRouter');
 
 
 // Import controllers
 // let UserController = require('./controllers/userController');
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 // File Upload
@@ -87,41 +80,40 @@ var upload = multer({ storage : storage}).single('userPhoto');
 
 
 /*
-router.get('/', (req, res, next)=>{
+router.get('/', (req, res, next) => {
     res.json({ message: 'hooray! welcome to our api!' });
 });
 */
 
 
-// Configure all endpoint will be pre-fixed by /api
+// Configure all endpoint will be prefixed by /api
 
 // NOTE: if connect to localhost:3000/ then it goes to without prefix /api (below), if connect to localhost:3000/api, then it goes to router.get(..)
 
 app.use('/api', router);
 
 
+
 // Basic route without prefix ./api
-app.get('/', function(req, res, mext){
-    console.log('Basic web api at root endpoint...');
-    res.send("basic webapi point...running!");
-    // res.sendFile(__dirname + "/index.html");
-})
-/*
-app.post('/api/avatar',function(req,res){
-    upload(req,res,function(err) {
-        if(err) {
-            return res.end("Error uploading file.");
-        }
-        res.end("File is uploaded");
+app.get('/', function(req, res, mext) {
+        console.log('Basic web api at root endpoint...');
+        res.send("basic webapi point...running!");
+        // res.sendFile(__dirname + "/index.html"); // serve statis file
+    })
+    /*
+    app.post('/api/avatar',function(req,res){
+        upload(req,res,function(err) {
+            if(err) {
+                return res.end("Error uploading file.");
+            }
+            res.end("File is uploaded");
+        });
     });
-});
-*/
+    */
 
 
 
-/****************************************************************/
-// All webapi routes - endpoints
-/****************************************************************/
+
 
 // User routes
 // router.post('/photo', UserController.uploadAvatar); // Remainder: the routes that use router.get or so will have a prefix: /api
