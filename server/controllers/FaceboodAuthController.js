@@ -1,58 +1,63 @@
-var passport = require('passport');
-var FacebookStrategy = require('passport-facebook').Strategy; // possible use of passport-facebook-token strategy?
-var config = require('../config/config');
-var User = require('../models/user');
+var mongooose = require('mongoose'),
+    jwt = require('jsonwebtoken'),
+    request = require('request'),
+    //path = require('path'),
+    //multer = require('multer'),
+    FbUser = require('../models/facebook.user');
 
-passport.use(new FacebookStrategy({
-        clientID: config.facebookauth.clientID, //FACEBOOK_APP_ID,
-        clientSecret: config.facebookauth.clientSecret, // FACEBOOK_APP_SECRET,
-        callbackURL: config.facebookauth.callbackURL, // "http://www.example.com/auth/facebook/callback"
-        profileFields: ['id', 'displayname', 'photos']
-    },
-    function(accessToken, refreshToken, profile, done) { // the callback function
-        /*
+exports.facebook = function(req, res, next) {
+    console.log('face book api called');
 
-        1. Check to see if the user exists in our system (DB)a;
-        2. if not, create one and return the user profile from Facebook
-        3. if exists, simply return the profile
+    var jwtSecret = 'mysecretkey'; //put in a conf file
+    var facebookToken = req.headers['facebooktoken'];
 
-        User.findOrCreate('...', function(err, user) {
-            if (err) { return done(err); }
-            done(null, user);
-        });*/
-        process.nextTick(function() {
-            User.findOne({ 'facebook.id': profile.id }, function(err, user) {
-                if (err) {
-                    return done(err);
-                }
-                if (user) {
-                    return done(user);
-                } else {
-                    var newUser = new User();
-                    newUser.facebook.id = profile.id;
-                    newUser.facebook.token = accessToken;
-                    newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName;
-                    newUser.facebook.email = profile.emails[0].value;
+    var path = 'https://graph.facebook.com/me?access_token=' + facebookToken;
 
-                    newUser.save(function(err) {
-                        if (err)
-                            throw err;
-                        return done(null, newUser);
-                    })
-                    console.log(profile);
-                }
-            })
-        })
-    }
-));
+    console.log('request send to Facebook graph api: ' + path);
 
-exports.authenticate = function(req, res, next) {
-    passport.authenticate('facebook');
-}
+    /** Send request with the facebook token to Facebook for verification */
+    request(path, function(error, response, body) {
 
-exports.authenticateCB = function(req, res, next) {
-    passport.authenticate('facebook', {
-        successRedirect: '/',
-        failureRedirect: '/login'
-    })
+        var facebookUserData = JSON.parse(body);
+
+        // console.log('facebook user data: ' + facebookUserData);
+
+        if (!error && response && response.statusCode && response.statusCode == 200) {
+            if (facebookUserData && facebookUserData.id) {
+                console.log('data returned from facebook: ' + facebookUserData.id);
+
+                /** create a new token for local login */
+                var accessToken = jwt.sign(facebookUserData, jwtSecret, {
+                    //Set the expiration
+                    expiresIn: 86400 //we are setting the expiration time of 1 day.
+                });
+
+                var new_token = JSON.stringify(accessToken);
+
+                console.log('new token sent back: ' + new_token);
+
+                /** Save the user in local database */
+
+
+
+
+                res.status(200).send(new_token);
+
+            } else {
+                res.status(403);
+                res.send('Access Forbidden/Debined');
+            }
+        } else {
+            console.log(facebookUserData.error);
+            //console.log(response);
+            res.status(500);
+            res.send('Access Forbiden');
+        }
+
+
+    });
+
+
+
+    // res.send('done'); // temp for test
 }

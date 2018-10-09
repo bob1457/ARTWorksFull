@@ -1,5 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {
+  SocialLoginModule,
+  AuthServiceConfig,
+  GoogleLoginProvider,
+  FacebookLoginProvider,
+  LinkedinLoginProvider,
+  VkontakteLoginProvider,
+} from "angular-6-social-login-v2";
 
 import { UserRoutingModule } from './user-routing.module';
 import { ProfileComponent } from './profile/profile.component';
@@ -9,6 +17,10 @@ import { UserHomeComponent } from './user-home/user-home.component';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { getAuthServiceConfigs } from './socialloginConfig';
+
+
 
 @NgModule({
   imports: [
@@ -17,9 +29,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     AppMaterialModule,
     FlexLayoutModule,
-    UserRoutingModule
+    HttpClientModule,
+    UserRoutingModule,
+    SocialLoginModule
   ],
   exports: [ProfileComponent],// LoginComponent, SignupComponent],
+  providers: [
+    {
+      provide: AuthServiceConfig,
+      useFactory: getAuthServiceConfigs
+    }
+  ],
   declarations: [ProfileComponent, LoginComponent, SignupComponent, UserHomeComponent]
 })
 export class UserModule { }

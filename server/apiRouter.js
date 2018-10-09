@@ -5,6 +5,10 @@ var config = require('./config/config');
 const path = require('path');
 const multer = require('multer');
 
+var expressJwt = require('express-jwt');
+
+var FbUser = require('./models/facebook.user');
+
 // ***********************************************************************************************************
 // Implement file upload using MULTER -- it  must work as a middleware to use multer to parse the form data, together with file upload
 var storage = multer.diskStorage({
@@ -23,6 +27,7 @@ var upload = multer({ storage: storage }).single('paintingImg');
 
 
 
+
 // start the route    
 let apiRoute = require('express').Router();
 
@@ -34,7 +39,11 @@ let AlbumController = require('./controllers/AlbumController');
 let PaintingController = require('./controllers/PaintingController');
 let FaceboodAuthController = require('./controllers/FaceboodAuthController');
 
+/**
+ * Facebook authentication - It may not need to run this if no local user is required
+ */
 
+apiRoute.get('/fb', FaceboodAuthController.facebook); // verify the token from facebook and create a local user
 
 /*
 apiRoute.get('/', (req, res, next) => {
@@ -52,11 +61,7 @@ apiRoute.get('/user/:id', UserController.getuserDetails);
 apiRoute.put('/user/:id', UserController.updateUser);
 apiRoute.post('/photo', UserController.uploadAvatar);
 
-/**
- * Facebook authentication
- */
-apiRoute.get('/auth/fb', FaceboodAuthController.authenticate); /** The URL that takes the login request to Facebook */
-apiRoute.get(config.facebookauth.callbackURL, FaceboodAuthController.authenticateCB); /** The URL that Facebook after successful authentication redirect to */
+
 
 /*
 let apiRoute = require('./routes/user.route');*/
@@ -74,7 +79,6 @@ apiRoute.get('/painting/:id', PaintingController.getPaintingDetails);
 apiRoute.put('/painting/:id', PaintingController.updatePaintingInAlbum);
 apiRoute.put('/painting/img/:id', upload, PaintingController.updateImgOfPainting);
 apiRoute.delete('/painting/:id', PaintingController.deletePainting);
-
 
 
 module.exports = apiRoute;

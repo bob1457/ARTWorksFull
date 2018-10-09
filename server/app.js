@@ -13,7 +13,10 @@ var bodyParser = require('body-parser');
 //var multer = require('multer');
 //var upload = multer();
 //var jsonwebtoken = require("jsonwebtoken");
+var cors = require("cors");
 var app = express();
+
+app.use(cors());
 
 //var multer = require('multer');
 
