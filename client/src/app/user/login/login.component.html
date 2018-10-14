@@ -12,9 +12,11 @@
             <mat-card-content>
                 <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" #f="ngForm" (ngSubmit)="onSubmit(f)" class="signup-form">
                     <mat-form-field class="signup-full-width">
-                        <input type="email" matInput placeholder="Your email" ngModel name="email" #emailInput="ngModel" email required>
-                        <mat-hint>Use your email to login</mat-hint>
-                        <mat-error *ngIf="emailInput.hasError('required')">Email is required</mat-error>
+                        <input type="text" matInput placeholder="Your username" ngModel name="username" #emailInput="ngModel" required>
+                        <!--email-->
+                        <mat-hint>Enter your username</mat-hint>
+                        <!--<mat-hint>Use your email to login</mat-hint>
+                        <mat-error *ngIf="emailInput.hasError('required')">Email is required</mat-error>-->
 
                     </mat-form-field>
 
@@ -26,6 +28,9 @@
 
                     <button type="submit" mat-raised-button color="primary" [disabled]="f.invalid">LOGIN</button>
                 </form>
+                <div *ngIf="errMsg" class="err">
+                    {{errMsg}}
+                </div>
             </mat-card-content>
         </mat-card>
     </div>

@@ -1,6 +1,9 @@
+import { MessageService } from './app-core/services/message.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ObservableMedia, MediaChange } from '@angular/flex-layout';
+import { Subscription } from 'rxjs';
+import { UserService } from './user/user.service';
 
 @Component({
   selector: 'app-root',
@@ -19,10 +22,19 @@ export class AppComponent implements OnInit {
 
   OpenButtonDisplay: string = 'none';
 
+  //isLoggedIn: boolean = false;
+  private loggedIn = JSON.parse(localStorage.getItem('loggedIn') || 'false' );
 
-  constructor(private media: ObservableMedia, private router: Router) {
+  //message: any;
+  subscription: Subscription;
+
+
+  constructor(private media: ObservableMedia,
+              private router: Router,
+              private messageService: MessageService,
+              private userService: UserService) { //private messageService: MessageService
     this.href = this.router.url;
-    console.log('The current URL: ' + this.href);
+    // console.log('The current URL: ' + this.href);
 
     this.media.subscribe((mediaChange: MediaChange) => {
       this.mode = this.getMode(mediaChange);
@@ -30,9 +42,22 @@ export class AppComponent implements OnInit {
       this.OpenButtonDisplay = this.showHideOpenButton(mediaChange,);
       this.NavDisplay = this.showHideNavBar(mediaChange,);
     });
+
+/**/
+    debugger;
+    this.subscription = this.messageService.getLoginStatus().subscribe(message => {this.loggedIn = message} );
+    this.loggedIn = localStorage.getItem('loggedIn');
+    console.log('localstorage: ' + localStorage.getItem('loggedIn'));
+    
+    console.log('status property: ' + this.loggedIn);
+
   }
 
   ngOnInit() {
+    //debugger;// subscribe the login event
+    //this.subscription = this.userService.isLoggedIn().subscribe(message => {this.loggedIn = message} );
+    this.loggedIn = localStorage.getItem('loggedIn');
+    console.log('localstorage: ' + localStorage.getItem('loggedIn'));
   }
 
   private getMode(mediaChange: MediaChange): string {
@@ -71,6 +96,15 @@ export class AppComponent implements OnInit {
     }
 
     // console.log()
+  }
+
+  logout(){
+    debugger;
+    this.messageService.setLoggedIn(false);
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('token');
+    this.loggedIn = localStorage.getItem('loggedIn');
+    this.router.navigate(['/']);
   }
 
 }

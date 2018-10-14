@@ -18,16 +18,23 @@
                         <mat-error *ngIf="!emailInput.hasError('required')">Email is invalid</mat-error>
                     </mat-form-field>
 
+                    <mat-form-field class="signup-full-width">
+                        <input type="text" matInput placeholder="Your username" ngModel name="username" #usernameInput="ngModel" username required>
+                        <!--<mat-hint>Should be a valid email address</mat-hint>-->
+                        <mat-error *ngIf="usernameInput.hasError('required')">username is required</mat-error>
+
+                    </mat-form-field>
+
                     <mat-form-field class="signup-full-width" hintLabel="Should be at least 6 characters long">
                         <input type="password" matInput placeholder="Your password" ngModel name="password" required minLength="6" #pwInput="ngModel">
                         <mat-hint align="end">{{pwInput.value?.length}} / 6</mat-hint>
                     </mat-form-field>
                     <mat-form-field class="signup-full-width">
-                        <input type="password" matInput placeholder="Confirm Your password">
+                        <input type="password" matInput placeholder="Confirm Your password" ngModel name="password2" #pw2Input="ngModel">
                         <mat-error>Must be at least 6 characters long</mat-error>
                     </mat-form-field>
                     <mat-form-field class="signup-full-width">
-                        <input type="text" matInput placeholder="Year of birth" ngModel name="birhtyear" required>
+                        <input type="text" matInput placeholder="Year of birth" ngModel name="birthyear" required>
                     </mat-form-field>
                     <mat-checkbox color="primary" ngModel name="agree" required>Agree to the terms and conditions</mat-checkbox>
                     <button type="submit" mat-raised-button color="primary" [disabled]="f.invalid">REGISTER</button>

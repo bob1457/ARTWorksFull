@@ -64,9 +64,9 @@ const UserSchema = new Schema({
     telephone: {
         type: String
     },
-    avatarImgUrl: {
-        type: String,
-        default: "/content/img/default.png"
+    avatar: {
+        type: String, // Will use gravatar instead
+        default: "/content/img/default.png" // This could be the default avatar if no avatar associated with user's email (configured in user controller)
     },
     createdOn: {
         type: Date,
@@ -76,15 +76,7 @@ const UserSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    lastlogin: { type: Date },
-
-    /** Social login  */
-    facebook: {
-        id: String,
-        token: String,
-        email: String,
-        name: String
-    }
+    lastlogin: { type: Date }
 }, { timestamps: true });
 
 

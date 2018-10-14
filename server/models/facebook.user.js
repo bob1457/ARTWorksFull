@@ -3,23 +3,31 @@ var bcrypt = require('bcrypt-nodejs');
 var Schema = mongoose.Schema;
 
 var FbUserSchema = new Schema({
-    firstName: { type: String },
-    lastName: { type: String },
+    //firstName: { type: String },
+    //lastName: { type: String },
 
     email: {
-        type: String,
-        required: true,
-        trim: true,
-        unique: true,
-        match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+        type: String //,
+            /*required: true,
+            trim: true,
+            unique: true,
+            match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/  */
     },
-    facebookProvider: {
+
+    /*facebookProvider: {
         type: {
             id: String,
             token: String
         },
         select: false
+    }*/
+    name: {
+        type: String
+    },
+    id: {
+        type: String
     }
+
 });
 
 

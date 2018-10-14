@@ -1,6 +1,7 @@
 'use strict';
 
 var config = require('./config/config');
+var auth = require('./utilities/check-auth');
 
 const path = require('path');
 const multer = require('multer');
@@ -66,7 +67,7 @@ apiRoute.post('/photo', UserController.uploadAvatar);
 /*
 let apiRoute = require('./routes/user.route');*/
 /**/
-apiRoute.get('/albums', AlbumController.getAlbums);
+apiRoute.get('/albums', auth, AlbumController.getAlbums);
 apiRoute.post('/album', AlbumController.addAlbum); //create album based on user _id (POST), which passed through form body, not as a parameter
 apiRoute.put('/album/:id', AlbumController.updateAlbum);
 apiRoute.get('/album/:id', AlbumController.getAlbumDetails);

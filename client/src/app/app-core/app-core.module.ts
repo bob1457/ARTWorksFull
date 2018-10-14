@@ -8,7 +8,6 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { BannerComponent } from './banner/banner.component';
 
 
-
 @NgModule({
   imports: [
     CommonModule,

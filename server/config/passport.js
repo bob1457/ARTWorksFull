@@ -11,10 +11,22 @@ module.exports = function() {
             clientID: config.facebookauth.clientID, // 'YOUR-FACEBOOK-CLIENT-ID',
             clientSecret: config.facebookauth.clientSecret // 'YOUR-FACEBOOK-CLIENT-SECRET'
         },
-        function(accessToken, refreshToken, profile, done) {
-            User.upsertFbUser(accessToken, refreshToken, profile, function(err, user) {
-                return done(err, user);
-            });
+        async(accessToken, refreshToken, profile, done) => {
+
+            try {
+
+                console.log('profile', profile);
+                console.log('accessToken', accessToken);
+                console.log('refreshToken', refreshToken);
+
+                FbUser.upsertFbUser(accessToken, refreshToken, profile, function(err, user) {
+                    return done(err, user);
+                });
+
+            } catch (error) {
+                done(error, false, error.message);
+            }
+
         }));
 
 };

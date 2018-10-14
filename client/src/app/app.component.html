@@ -109,28 +109,34 @@
             </div>
 
             <!--<mat-icon class="toolbar-icon" color="primary">account_circle</mat-icon>-->
-            <button mat-button [matMenuTriggerFor]="menu"><img src="../../../assets/images/avatar.png" title="bob" style="margin-left: 20px; vertical-align: top;" ></button>
-            <mat-menu #menu="matMenu" yPosition="below" xPosition="before" [overlapTrigger]="false">
-                <button mat-menu-item [routerLink]="['/user/profile']">
-                  <mat-icon style="color: black;">dialpad</mat-icon>
-                  <span>My Account</span><br>
+            <div *ngIf="loggedIn">
+                <button mat-button [matMenuTriggerFor]="menu"><img src="../../../assets/images/avatar.png" title="bob" style="margin-left: 20px; vertical-align: top;" ></button>
+                <mat-menu #menu="matMenu" yPosition="below" xPosition="before" [overlapTrigger]="false">
+                    <button mat-menu-item [routerLink]="['/profile']">
+                    <mat-icon style="color: black;">dialpad</mat-icon>
+                    <span>My Account</span><br>
 
-                </button>
-                <button mat-menu-item disabled>
-                  <mat-icon style="color:#d6c7c7;">voicemail</mat-icon>
-                  <span>Check voicemail</span>
-                </button>
-                <button mat-menu-item (click)="logout()">
-                  <mat-icon style="color: black;">link_off</mat-icon>
-                  <span>Logout</span>
-                </button>
-            </mat-menu>
+                  </button>
+                    <button mat-menu-item disabled>
+                    <mat-icon style="color:#d6c7c7;">voicemail</mat-icon>
+                    <span>Check voicemail</span>
+                  </button>
+                    <button mat-menu-item (click)="logout()">
+                    <mat-icon style="color: black;">link_off</mat-icon>
+                    <span>Logout</span>
+                  </button>
+                </mat-menu>
+            </div>
 
-            <a [routerLink]="['/user/signup']">
+
+            <a [routerLink]="['/signup']">
                 <mat-icon class="toolbar-icon" title="sign up">list_alt</mat-icon>
             </a>
-            <a [routerLink]="['/user/login']">
+            <a *ngIf="!loggedIn" [routerLink]="['/login']">
                 <mat-icon class="toolbar-icon" title="sign in">input</mat-icon>
+            </a>
+            <a *ngIf="loggedIn" style="cursor: pointer;">
+                <mat-icon class="toolbar-icon" (click)="logout()" title="sign out">open_in_new</mat-icon>
             </a>
             <!--<i class="fas fa-sign-in-alt" title="login"></i></a>-->
 

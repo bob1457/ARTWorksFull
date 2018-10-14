@@ -5,6 +5,7 @@ var path = require('path'),
     // userService = require('../services/user.service');
     jwt = require('jsonwebtoken'),
     config = require('../config/config');
+//var gravatar = require('gravatar');
 
 
 
@@ -47,7 +48,13 @@ exports.signup = (req, res, next) => {
                 message: 'Username already exists.'
             });
         }
-
+        /* Will use gravatar in production
+                const avatar = gravatar.url(req.body.email, {
+                    s: '50', //Size
+                    r: 'pg', // Raging
+                    d: 'mm' //Default
+                });
+        */
         // If no error, create account
         let oUser = new User({
             //firstname: firstname,
@@ -57,6 +64,7 @@ exports.signup = (req, res, next) => {
             password: password,
             birthyear: birthyear,
             role: role,
+            //avatar, will use gravatar later in production
             createdOn: new Date()
         });
 
@@ -65,7 +73,7 @@ exports.signup = (req, res, next) => {
 
             res.status(201).json({
                 success: true,
-                message: 'User created successfully, please login to access your account.',
+                message: 'User registered successfully',
                 registeredUser: oUser
             });
 
@@ -101,6 +109,7 @@ exports.login = function(req, res, next) {
 
                         res.status(201).json({
                             success: true,
+                            userData: user,
                             message: { 'userid': user._id, 'username': user.username, 'firstname': user.firstname, 'lastlogin': last_login },
                             token: token
                         });
