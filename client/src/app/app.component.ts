@@ -1,3 +1,4 @@
+import { AuthService } from 'angular-6-social-login-v2';
 import { MessageService } from './app-core/services/message.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -32,7 +33,8 @@ export class AppComponent implements OnInit {
   constructor(private media: ObservableMedia,
               private router: Router,
               private messageService: MessageService,
-              private userService: UserService) { //private messageService: MessageService
+              private userService: UserService,
+              private socialAuthService: AuthService) { //private messageService: MessageService
     this.href = this.router.url;
     // console.log('The current URL: ' + this.href);
 
@@ -48,7 +50,7 @@ export class AppComponent implements OnInit {
     this.subscription = this.messageService.getLoginStatus().subscribe(message => {this.loggedIn = message} );
     this.loggedIn = localStorage.getItem('loggedIn');
     console.log('localstorage: ' + localStorage.getItem('loggedIn'));
-    
+
     console.log('status property: ' + this.loggedIn);
 
   }
@@ -100,6 +102,7 @@ export class AppComponent implements OnInit {
 
   logout(){
     debugger;
+    this.socialAuthService.signOut();
     this.messageService.setLoggedIn(false);
     localStorage.removeItem('loggedIn');
     localStorage.removeItem('token');
