@@ -9,7 +9,7 @@ const multer = require('multer');
 var expressJwt = require('express-jwt');
 
 var FbUser = require('./models/facebook.user');
-
+/*
 // ***********************************************************************************************************
 // Implement file upload using MULTER -- it  must work as a middleware to use multer to parse the form data, together with file upload
 var storage = multer.diskStorage({
@@ -25,7 +25,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).single('paintingImg');
 
 // ***********************************************************************************************************
-
+*/
 
 
 
@@ -54,20 +54,29 @@ apiRoute.get('/', (req, res, next) => {
 // Configure all endpoint will be pre-fixed by /api
 
 // NOTE: if connect to localhost:3000/ then it goes to without prefix /api (below), if connect to localhost:3000/api, then it goes to router.get(..)
+var userRoute = require('./routes/user.route');
+var albumRotue = require('./routes/album.route');
+var paintingRoute = require('./routes/painting.route');
 
+apiRoute.use(userRoute);
+apiRoute.use( /*auth,*/ albumRotue);
+apiRoute.use(paintingRoute);
+
+/*
 apiRoute.post('/register', UserController.signup);
 apiRoute.post('/login', UserController.login);
 apiRoute.get('/users', UserController.users);
 apiRoute.get('/user/:id', UserController.getuserDetails);
 apiRoute.put('/user/:id', UserController.updateUser);
 apiRoute.post('/photo', UserController.uploadAvatar);
-
-
+*/
+apiRoute.post('/user/forgotpw', UserController.forgotPassword);
+apiRoute.post('/user/resetpw', UserController.resetPassword);
 
 /*
-let apiRoute = require('./routes/user.route');*/
-/**/
-apiRoute.get('/albums', auth, AlbumController.getAlbums);
+let apiRoute = require('./routes/user.route');
+
+apiRoute.get('/albums', AlbumController.getAlbums);
 apiRoute.post('/album', AlbumController.addAlbum); //create album based on user _id (POST), which passed through form body, not as a parameter
 apiRoute.put('/album/:id', AlbumController.updateAlbum);
 apiRoute.get('/album/:id', AlbumController.getAlbumDetails);
@@ -80,6 +89,6 @@ apiRoute.get('/painting/:id', PaintingController.getPaintingDetails);
 apiRoute.put('/painting/:id', PaintingController.updatePaintingInAlbum);
 apiRoute.put('/painting/img/:id', upload, PaintingController.updateImgOfPainting);
 apiRoute.delete('/painting/:id', PaintingController.deletePainting);
-
+*/
 
 module.exports = apiRoute;

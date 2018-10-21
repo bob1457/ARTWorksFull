@@ -3,6 +3,11 @@ var path = require('path'),
     multer = require('multer'),
     // user = require('../models/user'),
     // userService = require('../services/user.service');
+    mailer = require('../utilities/mailer');
+    nodemailer = require('nodemailer');
+    mailHandler = require('nodemailer-express-handlebars'),
+    async = require('async'),
+    crypto = require('crypto'),
     jwt = require('jsonwebtoken'),
     config = require('../config/config');
 //var gravatar = require('gravatar');
@@ -210,6 +215,137 @@ exports.uploadAvatar = (req, res, next) => {
         }
         console.log(req.file);
         // extract the new filename and path and update in the db
-        res.end("File is uploaded");
+        res.send("File is uploaded");
     });
 };
+
+exports.forgotPassword = (req, res, next) => {
+
+    console.log('user email: ' + req.body.email);
+    var validation_token = '';
+
+    /** Mail configuration 
+
+    var smtpTransport = mailer.createTransport({
+        service: process.env.MAILER_SERVICE_PROVIDER || 'Gmail',
+        auth: {
+          user: 'bob.h.yuan@gmail.com',
+          pass: '570924MBA'
+        }
+    });*/
+
+    var smtpTransport = nodemailer.createTransport({
+        /*service: config.mailsettings.service || 'gmail',
+        auth: {
+            user: config.mailsettings.username || 'bob.h.yuan@gmail.com',
+            pass: config.mailsettings.password || '570924MBA'
+            }*/
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+              user: 'bob.h.yuan@gmail.com',
+              pass: '570924MBA'
+          }
+    });
+
+    var handlebarsOptions = {
+        viewEngine: 'handlebars',
+        viewPath: path.resolve('./content/templates/'),
+        extName: '.html'
+    };
+    
+    smtpTransport.use('compile', mailHandler(handlebarsOptions));
+
+    async.waterfall([        
+        function(done) {
+            User.findOne({
+                email:req.body.email
+            }).exec(function(err, user){
+                if(user){
+                    done(err, user);
+                } else {
+                    done('User not found');
+                }
+                console.log(user);
+            });
+            
+        },
+        function(user, done) {
+            //create the ramdon token
+            crypto.randomBytes(20, function(err, buffer){
+                var token = buffer.toString('hex');
+                validation_token = token;
+                console.log(token);
+                done(err, user, token);
+            });
+        },
+        function(token, user, done) {   // Save the password rest token and expiry date in the db fro reset validation
+            console.log(req.body.email); 
+            User.findOneAndUpdate(
+                { email: req.body.email }, 
+                { $set: {reset_password_token: validation_token, reset_password_expires: Date.now() + 86400000} }, (err, new_user) => {
+                    done(err, token, new_user);
+                    if(err) {
+                        console.log('Error: ' + err);
+                    } else {
+                        console.log(new_user);
+                    }
+                
+                /*{ upsert: true, new: true}).exec(function(err, new_user ) {
+                    done(err, token, new_user);
+                    if(err) {
+                        console.log('Error: ' + err);
+                    } else {
+                        console.log(new_user);
+                    }*/
+                });
+                //console.log('user updated with token and exp date: ' + token );
+        },
+        function(token, user, done){
+            
+            var data = {
+                to:req.body.email,
+                from: 'admin@artworks.com',
+                template: 'forgot-password-email',
+                subject: 'Password help',
+                context: {
+                    url: 'http://localhost:5000/api/user/reset_password?token=' + token,
+                    name: user.username
+                }
+            };
+
+            //mailer();
+
+            smtpTransport.sendMail(data, function(err) {
+                console.log('sending email...');
+                if (!err) {
+                  return done('Kindly check your email for further instructions' );
+                  console.log('ok');
+                } else {
+                  return done(err);
+                  console.log('bad!!!')
+                  console.log(err);
+                }
+               
+            });
+            console.log('mail sent!');
+            //return res.send('mail for reset password sent!');
+        }
+    ], function(err){
+        return res.status(422).json({message: err});
+    });
+/*
+    mailer.sendMail(); // Send password-rest email
+    res.send('mail sent');
+*/
+}
+
+exports.resetPassword = (req, res, next) => {
+    User.findOne({
+        reset_password_token: req.body.token,
+        reset_password_expires:{
+            $gt: Date.now()
+        }
+    })
+}

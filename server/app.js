@@ -55,6 +55,7 @@ API Route Definition
 // All webapi routes - endpoints
 /****************************************************************/
 var router = require('./apiRouter');
+//var router = require('./routes');
 
 
 // Import controllers

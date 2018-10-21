@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { CarouselComponent } from './carousel/carousel.component';
 import { BannerComponent } from './banner/banner.component';
+//import { EqualValidatorDirective } from './directives/equal.validator.directive';
 
 
 @NgModule({

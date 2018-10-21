@@ -17,3 +17,8 @@ signup-card {
     position: relative;
     margin-left: 25px;
 }
+
+.tab-content {
+    margin-top: 35px;
+    border: 1px solid red;
+}

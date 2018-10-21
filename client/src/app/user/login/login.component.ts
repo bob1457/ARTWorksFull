@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
     this.http.get(`http://localhost:5000/api/fb`, { headers: header })
         .subscribe(data => {
                        //login was successful
-                       
+
                        this.messageService.setLoggedIn(true);
                        //save the token that you got from your REST API in your preferred location i.e. as a Cookie or LocalStorage as you do with normal login
                        localStorage.setItem('token', JSON.stringify(data));
@@ -84,14 +84,14 @@ export class LoginComponent implements OnInit {
         );
   }
 
-  
+
 
 
   // Local account login
   onSubmit(form: NgForm) {
     debugger;
     console.log(form.value);  // form.value.xxxx
-    this.userService.login(form.value)      
+    this.userService.login(form.value)
       .subscribe(
         res => {
           if(!res.token){
@@ -103,10 +103,10 @@ export class LoginComponent implements OnInit {
             console.log(this.user.userData);
             localStorage.setItem('token', JSON.stringify(res.token))
             //console.log(localStorage.getItem('token'));
-            this.router.navigate(['/']);
+            this.router.navigate(['/profile']);
           }
         },
-        err => {          
+        err => {
           console.log(err)
         }
       )

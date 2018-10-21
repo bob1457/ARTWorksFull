@@ -7,3 +7,8 @@ Color Pallet: ref: https://material.io/design/color/the-color-system.html#tools-
 
 
 Toolbar: #d500f9
+
+EqualValidator: url: 
+1. https://www.c-sharpcorner.com/article/implement-shared-custom-validator-directive-in-angular/
+2. https://stackblitz.com/edit/password-validation-angular-template-form?file=app%2Fcheck-password.directive.ts
+3. http://csharp-video-tutorials.blogspot.com/2018/03/angular-password-and-confirm-password.html

@@ -17,3 +17,8 @@ signup-card {
     position: relative;
     margin-left: 25px;
 }
+
+.msg {
+    margin-top: 25px;
+    text-align: center;
+}

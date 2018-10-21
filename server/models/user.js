@@ -72,6 +72,16 @@ const UserSchema = new Schema({
         type: Date,
         default: Date.now
     },
+
+    /** for forgot/reset password ? */
+    reset_password_token: {
+        type: String
+    },
+    reset_password_expires: {
+        type: Date
+    },
+
+
     updatedOn: {
         type: Date,
         default: Date.now

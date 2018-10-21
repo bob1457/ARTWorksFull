@@ -1,6 +1,6 @@
 <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center">
     <div fxFlex="25%"></div>
-    <div class="" fxFlex="50%">
+    <div class="" fxFlex="50%" style="margin-top: 30px;">
         <mat-card class="signup-card" style="margin-left: 10px;margin-right: 10px;">
             <mat-card-header>
                 <div mat-card-avatar class="signup-header-image">
@@ -26,19 +26,25 @@
                     </mat-form-field>
 
                     <mat-form-field class="signup-full-width" hintLabel="Should be at least 6 characters long">
-                        <input type="password" matInput placeholder="Your password" ngModel name="password" required minLength="6" #pwInput="ngModel">
+                        <input type="password" matInput placeholder="Your password" ngModel name="password" required minlength="6" #pwInput="ngModel">
                         <mat-hint align="end">{{pwInput.value?.length}} / 6</mat-hint>
+                        <mat-error *ngIf="pwInput.errors?.required">password is required!</mat-error>
+                        <mat-error *ngIf="pwInput.touched && pwInput.errors?.minlength ">password must be at least 6 characters long!</mat-error>
                     </mat-form-field>
+
+
                     <mat-form-field class="signup-full-width">
-                        <input type="password" matInput placeholder="Confirm Your password" ngModel name="password2" #pw2Input="ngModel">
-                        <mat-error>Must be at least 6 characters long</mat-error>
+                        <input type="password" matInput appEqualValidator="password" placeholder="Confirm Your password" ngModel name="password2" #pw2Input="ngModel">
+                        <mat-error *ngIf="pw2Input.touched && pw2Input.errors?.notEqual">password and confirm password do not match!</mat-error>
                     </mat-form-field>
+
                     <mat-form-field class="signup-full-width">
                         <input type="text" matInput placeholder="Year of birth" ngModel name="birthyear" required>
                     </mat-form-field>
                     <mat-checkbox color="primary" ngModel name="agree" required>Agree to the terms and conditions</mat-checkbox>
                     <button type="submit" mat-raised-button color="primary" [disabled]="f.invalid">REGISTER</button>
                 </form>
+                <div class="msg">{{message}}</div>
             </mat-card-content>
         </mat-card>
     </div>

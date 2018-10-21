@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { UserService } from '../user.service';
@@ -9,7 +10,12 @@ import { UserService } from '../user.service';
 })
 export class SignupComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  message: string = '';
+  sigup_done: boolean = false;
+  link: string = '<a href="/login">Login now</a>';
+
+  constructor(private userService: UserService,
+              private router: Router) { }
 
   ngOnInit() {
   }
@@ -17,10 +23,15 @@ export class SignupComponent implements OnInit {
   onSubmit(form: NgForm) {
     console.log(form.value);
     debugger;
-    this.userService.register(form.value).subscribe(
-      res => console.log(res),
-      err => console.log(err)
-    );
+    /**/this.userService.register(form.value).subscribe(
+      res => {
+        console.log(res);
+        this.message = 'Signup successful!'
+      },
+      err => {console.log(err)
+      this.message = 'Signup failed: error: ' + err;
+      });
     form.resetForm();
+    this.sigup_done = true;
   }
 }

@@ -19,6 +19,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { getAuthServiceConfigs } from './socialloginConfig';
+import { EqualValidatorDirective } from '../app-core/directives/equal.validator.directive';
 
 
 
@@ -31,7 +32,8 @@ import { getAuthServiceConfigs } from './socialloginConfig';
     FlexLayoutModule,
     HttpClientModule,
     UserRoutingModule,
-    SocialLoginModule
+    SocialLoginModule//,
+    //EqualValidatorDirective
   ],
   exports: [ProfileComponent],// LoginComponent, SignupComponent],
   providers: [
@@ -40,6 +42,12 @@ import { getAuthServiceConfigs } from './socialloginConfig';
       useFactory: getAuthServiceConfigs
     }
   ],
-  declarations: [ProfileComponent, LoginComponent, SignupComponent, UserHomeComponent]
+  declarations: [
+    ProfileComponent,
+    LoginComponent,
+    SignupComponent,
+    UserHomeComponent,
+    EqualValidatorDirective
+  ]
 })
 export class UserModule { }
