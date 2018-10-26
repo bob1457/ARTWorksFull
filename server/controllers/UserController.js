@@ -4,15 +4,48 @@ var path = require('path'),
     // user = require('../models/user'),
     // userService = require('../services/user.service');
     mailer = require('../utilities/mailer');
-    nodemailer = require('nodemailer');
-    mailHandler = require('nodemailer-express-handlebars'),
+nodemailer = require('nodemailer');
+mailHandler = require('nodemailer-express-handlebars'),
     async = require('async'),
-    crypto = require('crypto'),
+    bcrypt = require('bcrypt');
+crypto = require('crypto'),
     jwt = require('jsonwebtoken'),
     config = require('../config/config');
 //var gravatar = require('gravatar');
 
 
+/** Start Email Configuration ***********************************************************/
+var smtpTransport = nodemailer.createTransport({
+    /*service: config.mailsettings.service || 'gmail',
+    auth: {
+        user: config.mailsettings.username || 'bob.h.yuan@gmail.com',
+        pass: config.mailsettings.password || '570924MBA'
+        }*/
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: 'bob.h.yuan@gmail.com',
+        pass: '570924MBA'
+    }
+});
+
+var handlebarsOptions = {
+    viewEngine: 'handlebars',
+    viewPath: path.resolve('./content/templates/'),
+    extName: '.html'
+};
+
+smtpTransport.use('compile', mailHandler(handlebarsOptions));
+
+/** End Email Configuration **************************************************************/
+
+
+
+
+/** 
+ * All defined route handler/controller
+ */
 
 exports.signup = (req, res, next) => {
 
@@ -98,6 +131,7 @@ exports.login = function(req, res, next) {
             res.status(201).json({ success: false, message: 'Authentication failed. Incorrect login credentials.' });
         } else if (user) {
             user.comparePassword(req.body.password, function(err, isMatch) {
+                console.log(isMatch);
                 if (isMatch && !err) {
                     var token = jwt.sign(user.toJSON(), config.secret, {
                         expiresIn: config.tokenexp
@@ -127,7 +161,7 @@ exports.login = function(req, res, next) {
     });
 };
 
-exports.users = function(req, res, next) {
+exports.users = function(req, res, next) { // List all users
     User.find({}, function(err, users) {
         if (err) return res.status(500).send("There was a problem finding the users.");
         res.status(200).send(users);
@@ -135,6 +169,7 @@ exports.users = function(req, res, next) {
 };
 
 exports.getuserDetails = function(req, res, next) {
+    /**/
     User.find({ _id: req.params.id }).exec(function(err, user) {
         if (err) { res.status(400).json({ success: false, message: 'Error processing request ' + err }); }
         res.status(201).json({
@@ -240,13 +275,13 @@ exports.forgotPassword = (req, res, next) => {
             user: config.mailsettings.username || 'bob.h.yuan@gmail.com',
             pass: config.mailsettings.password || '570924MBA'
             }*/
-            host: 'smtp.gmail.com',
-            port: 465,
-            secure: true,
-            auth: {
-              user: 'bob.h.yuan@gmail.com',
-              pass: '570924MBA'
-          }
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: 'bob.h.yuan@gmail.com',
+            pass: '570924MBA'
+        }
     });
 
     var handlebarsOptions = {
@@ -254,44 +289,42 @@ exports.forgotPassword = (req, res, next) => {
         viewPath: path.resolve('./content/templates/'),
         extName: '.html'
     };
-    
+
     smtpTransport.use('compile', mailHandler(handlebarsOptions));
 
-    async.waterfall([        
+    async.waterfall([
         function(done) {
             User.findOne({
-                email:req.body.email
-            }).exec(function(err, user){
-                if(user){
+                email: req.body.email
+            }).exec(function(err, user) {
+                if (user) {
                     done(err, user);
                 } else {
                     done('User not found');
                 }
                 console.log(user);
             });
-            
+
         },
         function(user, done) {
             //create the ramdon token
-            crypto.randomBytes(20, function(err, buffer){
+            crypto.randomBytes(20, function(err, buffer) {
                 var token = buffer.toString('hex');
                 validation_token = token;
                 console.log(token);
                 done(err, user, token);
             });
         },
-        function(token, user, done) {   // Save the password rest token and expiry date in the db fro reset validation
-            console.log(req.body.email); 
-            User.findOneAndUpdate(
-                { email: req.body.email }, 
-                { $set: {reset_password_token: validation_token, reset_password_expires: Date.now() + 86400000} }, (err, new_user) => {
-                    done(err, token, new_user);
-                    if(err) {
-                        console.log('Error: ' + err);
-                    } else {
-                        console.log(new_user);
-                    }
-                
+        function(token, user, done) { // Save the password rest token and expiry date in the db fro reset validation
+            console.log(req.body.email);
+            User.findOneAndUpdate({ email: req.body.email }, { $set: { reset_password_token: validation_token, reset_password_expires: Date.now() + 86400000 } }, (err, new_user) => {
+                done(err, token, new_user);
+                if (err) {
+                    console.log('Error: ' + err);
+                } else {
+                    console.log(new_user);
+                }
+
                 /*{ upsert: true, new: true}).exec(function(err, new_user ) {
                     done(err, token, new_user);
                     if(err) {
@@ -299,18 +332,18 @@ exports.forgotPassword = (req, res, next) => {
                     } else {
                         console.log(new_user);
                     }*/
-                });
-                //console.log('user updated with token and exp date: ' + token );
+            });
+            //console.log('user updated with token and exp date: ' + token );
         },
-        function(token, user, done){
-            
+        function(token, user, done) {
+
             var data = {
-                to:req.body.email,
+                to: req.body.email,
                 from: 'admin@artworks.com',
                 template: 'forgot-password-email',
                 subject: 'Password help',
                 context: {
-                    url: 'http://localhost:5000/api/user/reset_password?token=' + token,
+                    url: 'http://localhost:5000/api/user/resetpw?token=' + validation_token,
                     name: user.username
                 }
             };
@@ -320,32 +353,129 @@ exports.forgotPassword = (req, res, next) => {
             smtpTransport.sendMail(data, function(err) {
                 console.log('sending email...');
                 if (!err) {
-                  return done('Kindly check your email for further instructions' );
-                  console.log('ok');
+                    return done('Kindly check your email for further instructions');
+                    console.log('ok');
                 } else {
-                  return done(err);
-                  console.log('bad!!!')
-                  console.log(err);
+                    return done(err);
+                    console.log('bad!!!')
+                    console.log(err);
                 }
-               
+
             });
             console.log('mail sent!');
             //return res.send('mail for reset password sent!');
         }
-    ], function(err){
-        return res.status(422).json({message: err});
+    ], function(err) {
+        return res.status(422).json({ message: err });
     });
-/*
-    mailer.sendMail(); // Send password-rest email
-    res.send('mail sent');
-*/
+    /*
+        mailer.sendMail(); // Send password-rest email
+        res.send('mail sent');
+    */
 }
 
 exports.resetPassword = (req, res, next) => {
+
+    SALT_FACTOR = 10;
+
+    console.log('coming token: ' + req.body.token);
+
     User.findOne({
+        /**/
         reset_password_token: req.body.token,
-        reset_password_expires:{
+        reset_password_expires: {
             $gt: Date.now()
+        }
+        //reset_password_token: req.body.token
+    }).exec(function(err, user) {
+        console.log('user found: ' + user);
+        if (!user) {
+            return res.send('Password reset token is invalid or has expired.');
+        }
+        if (!err && user) {
+
+            //bcrypt.genSalt(SALT_FACTOR, (err, salt) => {
+            //if (err) return next(err);
+            //console.log('error occured: ' + err);
+
+            /*  bcrypt.hash(req.body.newPassword, 10, null, (err, hash) => {
+                        user.password = hash;
+                        console.log('new password - hashed: ' + user.password);
+                    });
+                   
+                    
+                    bcrypt.hash(req.body.newPassword, salt, null, (err, hash) => {
+                        if (err) return next(err);
+                        console.log(hash);
+                        user.password = hash;
+                        console.log('users new pass: ' + hash);
+                        console.log(req.body.newPassword);
+                        next();
+                    });
+                 */
+            /*                  user.password = req.body.password;
+
+                                User.findOneAndUpdate(
+                                    //console.log('update user passwrod'),
+                                    { token: req.body.token}   ,                     
+                                    { $set: {password: req.body.password} },
+                                    console.log('update user password')
+                                );*/
+
+
+
+            user.password = req.body.password;
+            user.save((err) => {
+                    console.log('save user...');
+                    if (err) {
+                        console.log('error when saving...' + err);
+                        return res.status(422).send({
+                            message: err
+                        });
+
+                    } else {
+                        console.log('new password saved!!!');
+                        var data = {
+                            to: user.email,
+                            from: 'admin@artworks.com',
+                            template: 'reset-password-email',
+                            subject: 'Password Reset Confirmation',
+                            context: {
+                                name: user.username
+                            }
+                        };
+
+                        smtpTransport.sendMail(data, (err) => {
+                            console.log('sending email...');
+                            if (!err) {
+                                return res.json({ message: 'Password reset...check your email.' });
+                            } else {
+                                return done(err);
+                            }
+                        })
+                    }
+
+                })
+                //})
+
+        } else {
+            console.log('user not found!');
         }
     })
 }
+
+exports.resetPasswordTemplate = (req, res, next) => {
+        return res.sendFile(path.resolve('./content/templates/reset-password-template.html'));
+    }
+    /**
+     * 
+     * bcrypt.genSalt(SALT_FACTOR, (err, salt) => {
+            if (err) return next(err);
+
+            bcrypt.hash(users.password, salt, null, (err, hash) => {
+                if (err) return next(err);
+                users.password = hash;
+                next();
+            });
+        });
+     */

@@ -11,7 +11,7 @@ import {
 
 import { UserRoutingModule } from './user-routing.module';
 import { ProfileComponent } from './profile/profile.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent, ForgotPasswordDialog } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { UserHomeComponent } from './user-home/user-home.component';
 import { AppMaterialModule } from '../app-material/app-material.module';
@@ -42,11 +42,13 @@ import { EqualValidatorDirective } from '../app-core/directives/equal.validator.
       useFactory: getAuthServiceConfigs
     }
   ],
+  entryComponents: [LoginComponent, ForgotPasswordDialog],
   declarations: [
     ProfileComponent,
     LoginComponent,
     SignupComponent,
     UserHomeComponent,
+    ForgotPasswordDialog,
     EqualValidatorDirective
   ]
 })

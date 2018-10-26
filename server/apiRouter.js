@@ -36,15 +36,15 @@ let apiRoute = require('express').Router();
 
 // Import controllers
 let UserController = require('./controllers/UserController');
-let AlbumController = require('./controllers/AlbumController');
-let PaintingController = require('./controllers/PaintingController');
-let FaceboodAuthController = require('./controllers/FaceboodAuthController');
+//let AlbumController = require('./controllers/AlbumController');
+//let PaintingController = require('./controllers/PaintingController');
+//let FaceboodAuthController = require('./controllers/FaceboodAuthController');
 
 /**
  * Facebook authentication - It may not need to run this if no local user is required
  */
 
-apiRoute.get('/fb', FaceboodAuthController.facebook); // verify the token from facebook and create a local user
+// apiRoute.get('/fb', FaceboodAuthController.facebook); // verify the token from facebook and create a local user
 
 /*
 apiRoute.get('/', (req, res, next) => {
@@ -57,10 +57,15 @@ apiRoute.get('/', (req, res, next) => {
 var userRoute = require('./routes/user.route');
 var albumRotue = require('./routes/album.route');
 var paintingRoute = require('./routes/painting.route');
+var facebookRoute = require('./routes/facebook.route');
+
+apiRoute.get('/user/resetpw', UserController.resetPasswordTemplate)
+        .post(UserController.resetPassword);
 
 apiRoute.use(userRoute);
 apiRoute.use( /*auth,*/ albumRotue);
 apiRoute.use(paintingRoute);
+apiRoute.use(facebookRoute);
 
 /*
 apiRoute.post('/register', UserController.signup);
@@ -72,6 +77,9 @@ apiRoute.post('/photo', UserController.uploadAvatar);
 */
 apiRoute.post('/user/forgotpw', UserController.forgotPassword);
 apiRoute.post('/user/resetpw', UserController.resetPassword);
+
+//apiRoute.get('/user/resetpw', UserController.resetPasswordTemplate);
+        //.post(UserController.resetPassword);
 
 /*
 let apiRoute = require('./routes/user.route');

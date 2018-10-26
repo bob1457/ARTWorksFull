@@ -5,7 +5,7 @@ exports.paintingRoute = require('./painting.route');
 module.exports = {
     userRoute: require('./user.route')
 }
-*/
+
 var express = require('express');
 var router = express.Router();
 
@@ -13,4 +13,4 @@ var router = express.Router();
 require('./user.route');
 
 
-module.exports.router = router;
+module.exports.router = router;*/

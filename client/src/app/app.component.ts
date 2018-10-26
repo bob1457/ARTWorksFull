@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
 
   //isLoggedIn: boolean = false;
   private loggedIn = JSON.parse(localStorage.getItem('loggedIn') || 'false' );
+  private socialLogin = JSON.parse(localStorage.getItem('socialLogin'));
 
   //message: any;
   subscription: Subscription;
@@ -102,7 +103,10 @@ export class AppComponent implements OnInit {
 
   logout(){
     debugger;
-    this.socialAuthService.signOut();
+    if(this.socialLogin){
+      this.socialAuthService.signOut();
+    }
+
     this.messageService.setLoggedIn(false);
     localStorage.removeItem('loggedIn');
     localStorage.removeItem('token');

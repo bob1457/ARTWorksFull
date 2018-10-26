@@ -36,7 +36,7 @@ export class UserService {
 
   login(user):Observable<any>{
     console.log(user);
-    return this.http.post<any>(`${this.baseUrl}/api/login`, user)
+    return this.http.post<any>(`${this.baseUrl}/api/login`, user);
     /*.pipe(
       map(res => {
         if(res && res.token){          
@@ -47,5 +47,11 @@ export class UserService {
       })
     ) */
   }
+
+  forgotPassword(email): Observable<any> {
+    console.log('email sent to: ' + email);
+    return this.http.post<any>(`${this.baseUrl}/api/user/forgotpw`, {"email": email});
+  }
+    
 
 }

@@ -8,7 +8,7 @@ export class MessageService {
 
   private subject = new Subject<any>();
 
-  // isLoggedIn: boolean;
+  //isSocialLogin: boolean;
 
   constructor() { }
 /**/
@@ -17,7 +17,12 @@ export class MessageService {
     //return this.isLoggedIn;
     this.subject.next({loggedIn: value});
     // debugger;
-    localStorage.setItem('loggedIn', value.toString());    
+    localStorage.setItem('loggedIn', value.toString());
+  }
+
+  setSocialLogin(value: boolean) {
+    this.subject.next({socialLogin: value});
+    localStorage.setItem('socialLogin', value.toString());
   }
 
   getLoginStatus(): Observable<any> {

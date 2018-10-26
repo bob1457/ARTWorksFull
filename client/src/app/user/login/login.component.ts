@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { element } from 'protractor';
+import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService, FacebookLoginProvider, GoogleLoginProvider, LinkedinLoginProvider } from 'angular-6-social-login-v2';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -6,7 +7,11 @@ import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { MessageService } from '../../app-core/services/message.service';
 import { UserService } from '../user.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
+export interface DialogData {
+  email: string;
+}
 
 
 @Component({
@@ -20,12 +25,14 @@ export class LoginComponent implements OnInit {
 
   errMsg: string = '';
   user;
+  email: string = '';
 
   constructor( private http: HttpClient,
               private socialAuthService: AuthService,
               private router: Router,
+              public dialog: MatDialog,
               private messageService: MessageService,
-              private userService: UserService ) { }
+              private userService: UserService) { }
 
   ngOnInit() {
   }
@@ -55,7 +62,7 @@ export class LoginComponent implements OnInit {
   }
 
     /** verify the facebook token on server side and generate new token/create user in local db for further authorization on rest api */
-    sendToRestApiMethod(token: string) : void {
+  sendToRestApiMethod(token: string) : void {
     let baseUrl = environment.apiBaseUrl;
     debugger;
     console.log('Call api for processing...');
@@ -71,6 +78,7 @@ export class LoginComponent implements OnInit {
                        //login was successful
 
                        this.messageService.setLoggedIn(true);
+                       this.messageService.setSocialLogin(true);
                        //save the token that you got from your REST API in your preferred location i.e. as a Cookie or LocalStorage as you do with normal login
                        localStorage.setItem('token', JSON.stringify(data));
 
@@ -99,6 +107,7 @@ export class LoginComponent implements OnInit {
           } else {
             //console.log(res); // including user data
             this.messageService.setLoggedIn(true);
+            this.messageService.setSocialLogin(false);
             this.user = res;
             console.log(this.user.userData);
             localStorage.setItem('token', JSON.stringify(res.token))
@@ -111,5 +120,62 @@ export class LoginComponent implements OnInit {
         }
       )
   }
+
+
+  /** Open forgot password dialog */
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ForgotPasswordDialog, {
+      width: '450px',
+      autoFocus: true,
+      disableClose: true,
+      data: {email: this.email/*, animal: this.animal*/}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      debugger;
+      this.email = result;
+      console.log('email entered: ' + this.email);
+/**/      //send email
+      this.userService.forgotPassword(this.email).subscribe(
+        res => {console.log('email has been sent to ' + res)},
+        err => {console.log('error occurred: ' + err)}
+      )
+
+    });
+
+
+  }
+
+}
+
+
+// Modal dialog: forgot password
+@Component({
+  selector: 'forgot-password-dialog',
+  templateUrl: 'forgot-password-dialog.html',
+})
+export class ForgotPasswordDialog {
+
+  email: string;
+
+  constructor(
+    public dialogRef: MatDialogRef<ForgotPasswordDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+      this.email = data.email;
+    }
+
+    submitClick(): void {
+      this.dialogRef.close(this.email);
+    }
+
+    sendMail(email): void {
+      debugger;
+      this.dialogRef.close(email);
+    }
+
+    cancelClick(): void {
+      this.dialogRef.close();
+    }
 
 }

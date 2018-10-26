@@ -1,7 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
+//var bcrypt = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt');
 var Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -26,8 +27,8 @@ const UserSchema = new Schema({
         trim: true
     },
     password: {
-        type: String,
-        required: true
+        type: String//,
+        //required: true // can be enforced at client side
     },
 
     // the attributers shown below as user profile
@@ -93,14 +94,20 @@ const UserSchema = new Schema({
 //hashing a password before saving it to the database
 UserSchema.pre('save', function(next) {
     var users = this,
-        SALT_FACTOR = 10;
+        SALT_FACTOR = 12; // 10; // 12 for better security
 
     if (!users.isModified('password')) return next();
+    console.log('hashing password before saving...');
+    console.log(users.password);
+    
 
     bcrypt.genSalt(SALT_FACTOR, (err, salt) => {
+        console.log('error from pre: '+ err);
         if (err) return next(err);
 
-        bcrypt.hash(users.password, salt, null, (err, hash) => {
+        console.log(SALT_FACTOR);
+
+        bcrypt.hash(users.password, salt, /*null,*/ function(err, hash) {
             if (err) return next(err);
             users.password = hash;
             next();
@@ -113,7 +120,7 @@ UserSchema.pre('save', function(next) {
 UserSchema.methods.comparePassword = function(candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
         if (err) { return cb(err); }
-
+        console.log('user password for login: ' + candidatePassword);
         cb(null, isMatch);
     });
 };
