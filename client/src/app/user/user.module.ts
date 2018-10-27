@@ -20,6 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { getAuthServiceConfigs } from './socialloginConfig';
 import { EqualValidatorDirective } from '../app-core/directives/equal.validator.directive';
+import { RestPasswordComponent } from './rest-password/rest-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 
@@ -49,7 +51,8 @@ import { EqualValidatorDirective } from '../app-core/directives/equal.validator.
     SignupComponent,
     UserHomeComponent,
     ForgotPasswordDialog,
-    EqualValidatorDirective
+    EqualValidatorDirective,
+    ResetPasswordComponent
   ]
 })
 export class UserModule { }

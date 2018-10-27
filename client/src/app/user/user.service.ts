@@ -17,7 +17,7 @@ export class UserService {
 
 
   constructor(private http: HttpClient) { }
-/* 
+/*
   setLoginStatus(value: boolean){
     this.loggedInStatus = value;
     localStorage.setItem('loggedIn', value.toString());
@@ -39,10 +39,10 @@ export class UserService {
     return this.http.post<any>(`${this.baseUrl}/api/login`, user);
     /*.pipe(
       map(res => {
-        if(res && res.token){          
+        if(res && res.token){
           localStorage.setItem('token', JSON.stringify(res.token));
           console.log(localStorage.getItem('token'));
-          
+
         }
       })
     ) */
@@ -52,6 +52,10 @@ export class UserService {
     console.log('email sent to: ' + email);
     return this.http.post<any>(`${this.baseUrl}/api/user/forgotpw`, {"email": email});
   }
-    
 
+  resetPassword(password, token): Observable<any> {
+    debugger;
+    console.log('new password sent to: ' + password);
+    return this.http.post<any>(`${this.baseUrl}/api/user/resetpw`, {'password': password, token: token});
+  }
 }

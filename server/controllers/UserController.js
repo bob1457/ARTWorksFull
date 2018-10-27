@@ -354,7 +354,7 @@ exports.forgotPassword = (req, res, next) => {
                 console.log('sending email...');
                 if (!err) {
                     return done('Kindly check your email for further instructions');
-                    console.log('ok');
+
                 } else {
                     return done(err);
                     console.log('bad!!!')
@@ -450,7 +450,7 @@ exports.resetPassword = (req, res, next) => {
                             if (!err) {
                                 return res.json({ message: 'Password reset...check your email.' });
                             } else {
-                                return done(err);
+                                return res.json(err);
                             }
                         })
                     }

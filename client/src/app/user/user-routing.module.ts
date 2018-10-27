@@ -1,3 +1,4 @@
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ProfileComponent } from './profile/profile.component';
@@ -8,7 +9,9 @@ import { UserHomeComponent } from './user-home/user-home.component';
 const routes: Routes = [
   { path: 'profile', component: ProfileComponent},
   { path: 'login', component: LoginComponent},
-  { path: 'signup', component: SignupComponent}//,
+  { path: 'signup', component: SignupComponent},
+  { path: 'reset-password', component: ResetPasswordComponent}
+
   //{ path: '**', redirectTo: 'user', pathMatch: 'full'}
 ];
 
