@@ -60,7 +60,7 @@ var paintingRoute = require('./routes/painting.route');
 var facebookRoute = require('./routes/facebook.route');
 
 apiRoute.get('/user/resetpw', UserController.resetPasswordTemplate)
-        .post(UserController.resetPassword);
+    .post(UserController.resetPassword);
 
 apiRoute.use(userRoute);
 apiRoute.use( /*auth,*/ albumRotue);
@@ -79,7 +79,7 @@ apiRoute.post('/user/forgotpw', UserController.forgotPassword);
 apiRoute.post('/user/resetpw', UserController.resetPassword);
 
 //apiRoute.get('/user/resetpw', UserController.resetPasswordTemplate);
-        //.post(UserController.resetPassword);
+//.post(UserController.resetPassword);
 
 /*
 let apiRoute = require('./routes/user.route');
@@ -98,5 +98,7 @@ apiRoute.put('/painting/:id', PaintingController.updatePaintingInAlbum);
 apiRoute.put('/painting/img/:id', upload, PaintingController.updateImgOfPainting);
 apiRoute.delete('/painting/:id', PaintingController.deletePainting);
 */
+
+
 
 module.exports = apiRoute;

@@ -60,6 +60,7 @@ export class AppComponent implements OnInit {
     //debugger;// subscribe the login event
     //this.subscription = this.userService.isLoggedIn().subscribe(message => {this.loggedIn = message} );
     this.loggedIn = localStorage.getItem('loggedIn');
+    this.socialLogin = localStorage.getItem('socialLogin');
     console.log('localstorage: ' + localStorage.getItem('loggedIn'));
   }
 

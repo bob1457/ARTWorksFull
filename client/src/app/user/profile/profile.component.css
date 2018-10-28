@@ -20,5 +20,6 @@ signup-card {
 
 .tab-content {
     margin-top: 35px;
+    padding: 15px;
     border: 1px solid red;
 }

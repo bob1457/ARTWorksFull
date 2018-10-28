@@ -73,7 +73,7 @@ exports.signup = (req, res, next) => {
         return res.status(422).json({ success: false, message: 'Posted data is not correct or incomplete.' });
     }
 
-    /*
+    /**
         userService.signup(email, username, password, birthyear, role);
     */
     User.findOne({ username: username }, function(err, existingUser) {
@@ -229,7 +229,6 @@ exports.updateUser = (req, res, next) => {
 
 };
 
-
 exports.uploadAvatar = (req, res, next) => {
 
     // File Upload
@@ -343,7 +342,7 @@ exports.forgotPassword = (req, res, next) => {
                 template: 'forgot-password-email',
                 subject: 'Password help',
                 context: {
-                    url: 'http://localhost:5000/api/user/resetpw?token=' + validation_token,
+                    url: 'http://localhost:4200/reset-password?token=' + validation_token,
                     name: user.username
                 }
             };
