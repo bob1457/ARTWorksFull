@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subscription, Subject, Observable } from 'rxjs';
+import { MatSnackBar, MatDialog } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,13 @@ export class MessageService {
 
   //isSocialLogin: boolean;
 
-  constructor() { }
-/**/
+  constructor(private snackBar: MatSnackBar,
+              private dialog: MatDialog) { }
+
+              
+/**
+ * Application State 
+ */
   setLoggedIn(value: boolean) {
     //this.isLoggedIn = loggedIn;
     //return this.isLoggedIn;
@@ -29,5 +35,10 @@ export class MessageService {
     return this.subject.asObservable();
   }
 
+
+
+  /**
+   * 
+   */
 
 }

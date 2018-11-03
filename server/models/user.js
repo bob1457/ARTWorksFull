@@ -67,7 +67,7 @@ const UserSchema = new Schema({
     },
     avatar: {
         type: String, // Will use gravatar instead
-        default: "/content/img/default.png" // This could be the default avatar if no avatar associated with user's email (configured in user controller)
+        default: "/avatars/default.png" // This could be the default avatar if no avatar associated with user's email (configured in user controller)
     },
     createdOn: {
         type: Date,

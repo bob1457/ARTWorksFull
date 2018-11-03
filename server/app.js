@@ -6,7 +6,7 @@ Major application code
 'use strict';
 
 var express = require("express");
-//var path = require('path');
+var path = require('path');
 //var mongoose = require('mongoose');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
@@ -18,6 +18,10 @@ var app = express();
 
 app.use(cors());
 
+var imgPath = path.join(__dirname, 'content');
+//console.log(imgPath);
+
+app.use(express.static(imgPath));
 //var multer = require('multer');
 
 // Connect to mongodb
@@ -88,7 +92,6 @@ router.get('/', (req, res, next) => {
     res.json({ message: 'hooray! welcome to our api!' });
 });
 */
-
 
 // Configure all endpoint will be prefixed by /api
 

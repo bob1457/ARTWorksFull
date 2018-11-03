@@ -1,0 +1,67 @@
+<div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="15px" style="margin-top: 30px; margin-bottom: 55px;">
+    <div fxFlex="10%"></div>
+    <div class="" fxFlex="40%" style="margin-top: 30px;">
+        <mat-card class="signup-card" style="margin-left: 10px;margin-right: 10px;">
+            <mat-card-header>
+                <div mat-card-avatar class="signup-header-image">
+                    <img src="../../../assets/images/login.png">
+                </div>
+                <mat-card-title style="margin-left: 25px;">Account Login</mat-card-title>
+                <mat-card-subtitle style="margin-left: 25px;">Login to your account</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" #f="ngForm" (ngSubmit)="onSubmit(f)" class="signup-form">
+                    <mat-form-field class="signup-full-width">
+                        <input type="text" matInput placeholder="Your username" ngModel name="username" #emailInput="ngModel" required>
+                        <!--email-->
+                        <mat-hint>Enter your username</mat-hint>
+                        <!--<mat-hint>Use your email to login</mat-hint>
+                        <mat-error *ngIf="emailInput.hasError('required')">Email is required</mat-error>-->
+
+                    </mat-form-field>
+
+                    <mat-form-field class="signup-full-width">
+                        <input type="password" matInput placeholder="Your password" ngModel name="password" required>
+
+                    </mat-form-field>
+
+
+                    <button type="submit" mat-raised-button color="primary" [disabled]="f.invalid">LOGIN</button>
+                </form>
+                <div *ngIf="errMsg" class="err">
+                    {{errMsg}}
+                </div>
+                <div>
+                    <a style="cursor:pointer" (click)="openDialog()">Forgot password?</a>
+                </div>
+                <div *ngIf="email" style="text-align:center; color:blue; margin-top: 20px;">
+                    An email has been sent to: {{email}}!
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxFlex="40%">
+        <mat-card class="signup-card" style="margin-left: 10px;margin-right: 10px;">
+            <mat-card-header>
+                <div mat-card-avatar class="signup-header-image">
+                    <img src="../../../assets/images/social.png">
+                </div>
+                <mat-card-title style="margin-left: 25px;">Social Media Login</mat-card-title>
+                <mat-card-subtitle style="margin-left: 25px;">Use Social Media Login</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <div fxLayout="row" fxLayoutAlign="center center" style="margin-top: 30px;">
+                    <a (click)="facebookLogin()" style="cursor: pointer;"><img src="../../../assets/images/facebook.png"></a> &nbsp;
+                    <img style="cursor: pointer;" src="../../../assets/images/Instagram.png"> &nbsp;
+                    <img style="cursor: pointer;" src="../../../assets/images/googleplus.png"> &nbsp;
+                    <img style="cursor: pointer;" src="../../../assets/images/twitter.png"> &nbsp;
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxFlex="10%"></div>
+
+
+
+</div>

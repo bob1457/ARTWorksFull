@@ -110,7 +110,10 @@ export class LoginComponent implements OnInit {
             this.messageService.setSocialLogin(false);
             this.user = res;
             console.log(this.user.userData);
-            localStorage.setItem('token', JSON.stringify(res.token))
+            localStorage.setItem('token', JSON.stringify(res.token));
+            //localStorage.setItem('_id', this.user.userDate._id);
+            localStorage.setItem('avatar', res.userData.avatar);
+            localStorage.setItem('username', res.userData.username);
             //console.log(localStorage.getItem('token'));
             this.router.navigate(['/profile']);
           }
@@ -120,7 +123,6 @@ export class LoginComponent implements OnInit {
         }
       )
   }
-
 
   /** Open forgot password dialog */
   openDialog(): void {

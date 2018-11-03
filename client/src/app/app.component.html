@@ -110,7 +110,7 @@
 
             <!--<mat-icon class="toolbar-icon" color="primary">account_circle</mat-icon>-->
             <div *ngIf="loggedIn">
-                <button mat-button [matMenuTriggerFor]="menu"><img src="../../../assets/images/avatar.png" title="bob" style="margin-left: 20px; vertical-align: top;" ></button>
+                <button mat-button [matMenuTriggerFor]="menu" *ngIf="user"><img src="{{serverUrl}}/avatars{{user.avatar}}" title="{{username}}" class="img-circle" style="margin-left: 20px; vertical-align: top; " ></button>
                 <mat-menu #menu="matMenu" yPosition="below" xPosition="before" [overlapTrigger]="false">
                     <button mat-menu-item [routerLink]="['/profile']">
                     <mat-icon style="color: black;">dialpad</mat-icon>
@@ -128,7 +128,6 @@
                 </mat-menu>
             </div>
 
-
             <a [routerLink]="['/signup']">
                 <mat-icon class="toolbar-icon" title="sign up">list_alt</mat-icon>
             </a>
@@ -143,7 +142,6 @@
             <!--<i class="fas fa-sign-out-alt"></i>
             <mat-icon class="toolbar-icon" title="logout">exit_to_app</mat-icon>-->
         </mat-toolbar>
-
 
         <!-- all pages are hosted here -->
         <router-outlet></router-outlet>

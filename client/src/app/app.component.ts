@@ -1,3 +1,4 @@
+import { IUser } from './user/user.interface';
 import { AuthService } from 'angular-6-social-login-v2';
 import { MessageService } from './app-core/services/message.service';
 import { Component, OnInit } from '@angular/core';
@@ -13,6 +14,12 @@ import { UserService } from './user/user.service';
 })
 export class AppComponent implements OnInit {
   title = 'app';
+
+  avatarUrl: string = '';
+  username: string = '';
+  user: IUser;
+
+  serverUrl: string = 'http://localhost:5000';
 
   public href = '';
 
@@ -57,10 +64,21 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    let userid = localStorage.getItem('username');
     //debugger;// subscribe the login event
     //this.subscription = this.userService.isLoggedIn().subscribe(message => {this.loggedIn = message} );
     this.loggedIn = localStorage.getItem('loggedIn');
     this.socialLogin = localStorage.getItem('socialLogin');
+    //this.avatarUrl = localStorage.getItem('avatar');
+
+    this.userService.getUserProfile(userid).subscribe( profile => {
+      profile = this.user = profile;
+      console.log(this.user);
+    });
+
+    this.username = localStorage.getItem('username');
+    console.log(this.avatarUrl);
     console.log('localstorage: ' + localStorage.getItem('loggedIn'));
   }
 
@@ -104,7 +122,7 @@ export class AppComponent implements OnInit {
 
   logout(){
     debugger;
-    if(this.socialLogin){
+    if(this.socialLogin == 'true'){
       this.socialAuthService.signOut();
     }
 
@@ -116,3 +134,4 @@ export class AppComponent implements OnInit {
   }
 
 }
+

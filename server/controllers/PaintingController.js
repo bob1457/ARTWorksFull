@@ -1,8 +1,8 @@
 'use strict';
 
-var mongooose = require('mongoose'),
-    path = require('path'),
-    multer = require('multer'),    
+var //mongooose = require('mongoose'),
+    //path = require('path'),
+    //multer = require('multer'),    
     Painting = require('../models/painting');
 
 exports.addPainting = function(req, res, next){
@@ -48,7 +48,7 @@ exports.addPainting = function(req, res, next){
         desc: desc, 
         caption: caption,           
         albumId: albumId,
-        imagePathUrl:"content/imgs/paintings/" + req.file.filename
+        imagePathUrl:"imgs/paintings/" + req.file.filename  // the path should be '/content/imgs/...' ?
     });
 
     console.log(req.body);

@@ -99,6 +99,7 @@ apiRoute.put('/painting/img/:id', upload, PaintingController.updateImgOfPainting
 apiRoute.delete('/painting/:id', PaintingController.deletePainting);
 */
 
-
+/** img testing routes */
+apiRoute.post('/img', UserController.resizeImg);
 
 module.exports = apiRoute;

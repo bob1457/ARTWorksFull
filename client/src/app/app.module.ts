@@ -18,6 +18,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BannerComponent } from './app-core/banner/banner.component';
 
 import { UserModule } from './user/user.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './app-core/helpers/jwt.interceptor';
 
 // import {SlideshowModule} from 'ng-simple-slideshow';
 
@@ -47,7 +49,9 @@ import { UserModule } from './user/user.module';
     // ,
     // SlideshowModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

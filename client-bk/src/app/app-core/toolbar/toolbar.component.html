@@ -1,0 +1,44 @@
+<mat-toolbar class="main-toolbar mat-elevation-z2" fxLayout="row" fxLayoutAlign="start center" [ngClass]="(router.url != '/')? 'toolbar2': 'toolbar'">
+    <div [ngStyle]="{ 'display': OpenButtonDisplay}">
+        <button mat-icon-button (click)="drawer.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+    </div>
+    <div class="logo">
+        <img src="http://placehold.it/50x50" width="50px" height="50px" />
+    </div>
+    <span class="toolbar-spacer"></span>
+    <div style="font-size:.85em;">
+        <a class="nav-menu" [routerLink]="['/']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">home</a>
+        <a class="nav-menu" [routerLink]="['/gallery']" routerLinkActive="active">gallery</a>
+        <a class="nav-menu" [routerLink]="['/about']" routerLinkActive="active">about</a>
+    </div>
+    <!--<mat-icon class="toolbar-icon" color="primary">account_circle</mat-icon>-->
+    <button mat-button [matMenuTriggerFor]="menu"><img src="../../../assets/images/avatar.png"  width="30" height="30" title="bob" style="margin-left: 20px;    vertical-align: top;" ></button>
+    <mat-menu #menu="matMenu" yPosition="below" xPosition="before" [overlapTrigger]="false">
+        <button mat-menu-item>
+          <mat-icon style="color: black;">dialpad</mat-icon>
+          <span>My Account</span><br>
+
+        </button>
+        <button mat-menu-item disabled>
+          <mat-icon style="color:#d6c7c7;">voicemail</mat-icon>
+          <span>Check voicemail</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon style="color: black;">low_priority</mat-icon>
+          <span>Logout</span>
+        </button>
+    </mat-menu>
+
+    <a [routerLink]="['/user/signup']">
+        <mat-icon class="toolbar-icon" title="sign up">list_alt</mat-icon>
+    </a>
+    <a [routerLink]="['/user/login']">
+        <mat-icon class="toolbar-icon" title="sign in">input</mat-icon>
+    </a>
+    <!--<i class="fas fa-sign-in-alt" title="login"></i></a>-->
+
+    <!--<i class="fas fa-sign-out-alt"></i>
+    <mat-icon class="toolbar-icon" title="logout">exit_to_app</mat-icon>-->
+</mat-toolbar>

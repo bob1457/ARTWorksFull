@@ -1,15 +1,17 @@
 import { Injectable, EventEmitter, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+//import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
-
-declare const FB:any;
+import { Observable, BehaviorSubject } from 'rxjs';
+import { IUser } from './user.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+
+  private currentUserSubject: BehaviorSubject<IUser>;
+  public currentUser: string;
 
   //private loggedInStatus = JSON.parse(localStorage.getItem('loggedIn') || 'false' );
   private baseUrl = environment.apiBaseUrl;
@@ -58,4 +60,17 @@ export class UserService {
     console.log('new password sent to: ' + password);
     return this.http.post<any>(`${this.baseUrl}/api/user/resetpw`, {'password': password, token: token});
   }
+
+  getUserProfile(username: string): Observable<IUser> {    
+    return this.http.get<IUser>(`${this.baseUrl}/api/user/${username}`);
+  }
+
+  public get currentUserValue() {
+    debugger;
+    
+    //return this.currentUserSubject.value;
+    return this.currentUser = localStorage.getItem('token');
+  }
+
+
 }

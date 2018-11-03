@@ -1,10 +1,12 @@
 var path = require('path'),
     User = require('../models/user'), // import the user from the model
     multer = require('multer'),
-    // user = require('../models/user'),
+
     // userService = require('../services/user.service');
     mailer = require('../utilities/mailer');
-nodemailer = require('nodemailer');
+imgProcessor = require('../utilities/imgProcessor'),
+    jimp = require('jimp'),
+    nodemailer = require('nodemailer');
 mailHandler = require('nodemailer-express-handlebars'),
     async = require('async'),
     bcrypt = require('bcrypt');
@@ -13,6 +15,7 @@ crypto = require('crypto'),
     config = require('../config/config');
 //var gravatar = require('gravatar');
 
+var imgPath = path.join(__dirname, 'content/avatars/'); //'./content/avatars/';
 
 /** Start Email Configuration ***********************************************************/
 var smtpTransport = nodemailer.createTransport({
@@ -170,12 +173,16 @@ exports.users = function(req, res, next) { // List all users
 
 exports.getuserDetails = function(req, res, next) {
     /**/
-    User.find({ _id: req.params.id }).exec(function(err, user) {
+    //User.find({ _id: req.params.id }).exec(function(err, user) {
+    User.findOne({ username: req.params.id }).exec(function(err, user) {
         if (err) { res.status(400).json({ success: false, message: 'Error processing request ' + err }); }
-        res.status(201).json({
-            success: true,
-            data: user
-        });
+        res.status(201).json( //{
+            //success: true,
+            //data: user
+            //}
+            //{user: user}
+            user // just return the user object in json format
+        );
     });
 };
 
@@ -229,28 +236,75 @@ exports.updateUser = (req, res, next) => {
 
 };
 
-exports.uploadAvatar = (req, res, next) => {
+exports.updateAvatar = (req, res, next) => {
 
-    // File Upload
-    var storage = multer.diskStorage({
-        destination: function(req, file, callback) {
-            callback(null, './content/avatars'); // This location must exist, if not, uploading will fail. Create the folder before testing
-        },
-        filename: function(req, file, callback) {
-            callback(null, file.fieldname + '-' + Date.now() + "." + path.extname(file.originalname));
-        }
+    var userid = req.params.id;
+    //var fileName = '';
+    /*
+        // File Upload
+        var storage = multer.diskStorage({
+            destination: function(req, file, callback) {
+                callback(null, './content/avatars'); // This location must exist, if not, uploading will fail. Create the folder before testing
+            },
+            filename: function(req, file, callback) {
+                callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+                fileName = file.fieldname + '-' + Date.now() + path.extname(file.originalname);
+            }
+        });
+
+        var upload = multer({ storage: storage }).single('userPhoto');
+
+        upload(req, res, function(err) {
+            if (err) {
+                return res.end("Error uploading file.");
+            }
+
+            console.log(req.file);
+
+            // extract the new filename and path and update in the db
+            //res.send("File is uploaded");
+            //fileName = file.filename;
+        });
+    */
+    // Resize the image file
+    /*
+        jimp.read(imgPath + fileName).then(image => {
+            image.resize(50, 50)
+            .write()
+        })
+
+    */
+    const file2 = req.file.name;
+    jimp.read('./content/avatars/' + req.file.filename).then(img => {
+        console.log('resizing... ' + req.file.filename);
+        img.resize(50, 50)
+            .write('./content/avatars/' + req.file.filename) //;
+            .resize(80, 80)
+            .write('./content/avatars/md/' + req.file.filename);
+        console.log('all resize done...');
+        next();
     });
 
-    var upload = multer({ storage: storage }).single('userPhoto');
+    // Update user data in database
 
-    upload(req, res, function(err) {
-        if (err) {
-            return res.end("Error uploading file.");
+    User.findById(userid).exec(function(err, user) {
+        if (err) { res.status(400).json({ success: false, message: 'Error processing request ' + err }); }
+
+        if (user) {
+            //user.avatar = '/avatars/' + req.file.filename;
+            user.avatar = '/' + req.file.filename;
         }
-        console.log(req.file);
-        // extract the new filename and path and update in the db
-        res.send("File is uploaded");
-    });
+
+        user.save(function(err) {
+            if (err) { res.status(400).json({ success: false, message: 'Error processing request ' + err }); }
+            res.status(201).json({
+                success: true,
+                message: 'User profile updated successfully'
+            });
+        });
+    })
+
+
 };
 
 exports.forgotPassword = (req, res, next) => {
@@ -266,14 +320,10 @@ exports.forgotPassword = (req, res, next) => {
           user: 'bob.h.yuan@gmail.com',
           pass: '570924MBA'
         }
-    });*/
+    });
 
     var smtpTransport = nodemailer.createTransport({
-        /*service: config.mailsettings.service || 'gmail',
-        auth: {
-            user: config.mailsettings.username || 'bob.h.yuan@gmail.com',
-            pass: config.mailsettings.password || '570924MBA'
-            }*/
+        
         host: 'smtp.gmail.com',
         port: 465,
         secure: true,
@@ -290,7 +340,7 @@ exports.forgotPassword = (req, res, next) => {
     };
 
     smtpTransport.use('compile', mailHandler(handlebarsOptions));
-
+*/
     async.waterfall([
         function(done) {
             User.findOne({
@@ -478,3 +528,28 @@ exports.resetPasswordTemplate = (req, res, next) => {
             });
         });
      */
+
+
+/** Testing of image processing */
+
+//var jimp = require('jimp');
+//var imgPath = path.join(__dirname, 'content') ;
+// var imgPath = './content/avatars/'
+
+exports.resizeImg = (req, res, next) => {
+
+    jimp.read('./content/avatars/default.png').then(image => {
+            //console.log(image);
+
+            image.resize(50, 50)
+                .write('./content/avatars/default.png')
+                .resize(100, 100)
+                .write('./content/avatars/default-md.png');
+
+            res.send('image resize done!')
+        })
+        .catch(err => {
+            console.log(err);
+            res.send('error occurred!')
+        })
+}
