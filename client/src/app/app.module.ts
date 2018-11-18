@@ -10,10 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
-// import { ToolbarComponent } from './app-core/toolbar/toolbar.component';
-import { LoginComponent } from './user/login/login.component';
-import { SignupComponent } from './user/signup/signup.component';
-import { ProfileComponent } from './user/profile/profile.component';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BannerComponent } from './app-core/banner/banner.component';
 

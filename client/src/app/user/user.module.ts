@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   SocialLoginModule,
-  AuthServiceConfig,
+  AuthServiceConfig//,
+  /**
   GoogleLoginProvider,
   FacebookLoginProvider,
   LinkedinLoginProvider,
-  VkontakteLoginProvider,
+  VkontakteLoginProvider, */
 } from "angular-6-social-login-v2";
 
 import { UserRoutingModule } from './user-routing.module';

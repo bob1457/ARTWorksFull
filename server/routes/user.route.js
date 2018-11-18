@@ -1,6 +1,8 @@
 'use strict';
+
 var path = require('path');
 var multer = require('multer');
+var authCheck = require('../utilities/check-auth');
 
 /** File upload */
 var storage = multer.diskStorage({
@@ -23,11 +25,14 @@ let UserController = require('../controllers/UserController');
 
 userRoute.post('/register', UserController.signup);
 userRoute.post('/login', UserController.login);
-userRoute.get('/users', UserController.users);
-userRoute.get('/user/:id', UserController.getuserDetails);
-userRoute.put('/user/:id', UserController.updateUser);
+userRoute.get('/users', authCheck, UserController.users);
+userRoute.get('/user/:id', authCheck, UserController.getuserDetails);
+userRoute.put('/user/:id', authCheck, UserController.updateUser);
 //userRoute.post('/photo', UserController.updateAvatar);
-userRoute.post('/avatar/:id', upload, UserController.updateAvatar);
+userRoute.post('/avatar/:id', authCheck, upload, UserController.updateAvatar);
+
+
+userRoute.post('/user/changepw/:username', authCheck, UserController.changePassword);
 
 
 module.exports = userRoute;

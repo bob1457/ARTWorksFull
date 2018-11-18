@@ -1,0 +1,59 @@
+<mat-toolbar class="main-toolbar mat-elevation-z2" fxLayout="row" fxLayoutAlign="start center" [ngClass]="(router.url != '/')? 'toolbar2': 'toolbar'" >
+
+  <div [ngClass]="(router.url != '/')? 'logo': 'no-logo'">
+      <img src="../assets/images/logo-sm.png" />
+  </div>
+  <div [ngStyle]="{ 'display': OpenButtonDisplay}">
+      <button mat-icon-button (click)="drawer.toggle()">
+      <mat-icon style="margin-top: 7px;">menu</mat-icon>
+    </button>
+  </div>
+  <span class="toolbar-spacer"></span>
+  <div [ngStyle]="{ 'display': NavDisplay}">
+      <div style="font-size:.85em;">
+          <a class="nav-menu" [routerLink]="['/']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }">home</a>
+          <a class="nav-menu" [routerLink]="['/gallery']" routerLinkActive="active">gallery</a>
+          <a class="nav-menu" [routerLink]="['/about']" routerLinkActive="active">about</a>
+      </div>
+  </div>
+
+  <!--<mat-icon class="toolbar-icon" color="primary">account_circle</mat-icon>-->
+  <div *ngIf="loggedIn">
+      <button mat-button [matMenuTriggerFor]="menu" *ngIf="user">
+          <img attr.src="{{serverUrl}}/avatars{{user.avatar}}" title="{{user.username}}" class="img-circle" style="margin-left: 20px; vertical-align: top; " >
+      </button> <!-- {{serverUrl}}/avatars{{user.avatar}}    {{avatarUrl}}-->
+           
+      <button mat-button [matMenuTriggerFor]="menu" *ngIf="!user">
+              <img src="{{serverUrl}}/avatars{{avatarUrl}}" title="{{username}}" class="img-circle" style="margin-left: 20px; vertical-align: top; " >
+          </button>
+      <mat-menu #menu="matMenu" yPosition="below" xPosition="before" [overlapTrigger]="false">
+          <button mat-menu-item [routerLink]="['/profile']">
+          <mat-icon style="color: black;">dialpad</mat-icon>
+          <span>My Account</span><br>
+
+        </button>
+          <button mat-menu-item disabled>
+          <mat-icon style="color:#d6c7c7;">voicemail</mat-icon>
+          <span>Check voicemail</span>
+        </button>
+          <button mat-menu-item (click)="logout()">
+          <mat-icon style="color: black;">link_off</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+  </div>
+
+  <a [routerLink]="['/signup']">
+      <mat-icon class="toolbar-icon" title="sign up">list_alt</mat-icon>
+  </a>
+  <a *ngIf="!loggedIn" [routerLink]="['/login']">
+      <mat-icon class="toolbar-icon" title="sign in">input</mat-icon>
+  </a>
+  <a *ngIf="loggedIn" style="cursor: pointer;">
+      <mat-icon class="toolbar-icon" (click)="logout()" title="sign out">open_in_new</mat-icon>
+  </a>
+  <!--<i class="fas fa-sign-in-alt" title="login"></i></a>-->
+
+  <!--<i class="fas fa-sign-out-alt"></i>
+  <mat-icon class="toolbar-icon" title="logout">exit_to_app</mat-icon>-->
+</mat-toolbar>

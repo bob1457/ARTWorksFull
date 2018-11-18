@@ -1,9 +1,9 @@
 import { Injectable, EventEmitter, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-//import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { IUser } from './user.interface';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +11,22 @@ import { IUser } from './user.interface';
 export class UserService {
 
   private currentUserSubject: BehaviorSubject<IUser>;
-  public currentUser: string;
+  public currentUser: Observable<IUser>;
+  public token: string;
 
   //private loggedInStatus = JSON.parse(localStorage.getItem('loggedIn') || 'false' );
   private baseUrl = environment.apiBaseUrl;
 
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    this.currentUserSubject = new BehaviorSubject<IUser>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
+
+  // Ref: http://jasonwatmore.com/post/2018/06/25/angular-6-communicating-between-components-with-observable-subject
+  // Ref: http://jasonwatmore.com/post/2018/10/29/angular-7-user-registration-and-login-example-tutorial
+
 /*
   setLoginStatus(value: boolean){
     this.loggedInStatus = value;
@@ -30,6 +38,10 @@ export class UserService {
   }
 */
 
+  public get currentUserValue(): IUser {
+    return this.currentUserSubject.value;
+  }
+
   register(user){
    // debugger;
     console.log(user);
@@ -38,16 +50,21 @@ export class UserService {
 
   login(user):Observable<any>{
     console.log(user);
-    return this.http.post<any>(`${this.baseUrl}/api/login`, user);
-    /*.pipe(
+    return this.http.post<any>(`${this.baseUrl}/api/login`, user)//;
+    /**/.pipe(
       map(res => {
         if(res && res.token){
-          localStorage.setItem('token', JSON.stringify(res.token));
+          localStorage.setItem('token', res.token);
+          localStorage.setItem('currentUser', JSON.stringify(res.user));
+          this.currentUserSubject.next(res.user);
+
           console.log(localStorage.getItem('token'));
 
         }
+
+        return res;
       })
-    ) */
+    ) 
   }
 
   forgotPassword(email): Observable<any> {
@@ -65,12 +82,16 @@ export class UserService {
     return this.http.get<IUser>(`${this.baseUrl}/api/user/${username}`);
   }
 
-  public get currentUserValue() {
+  public get currentUserToken() {
     debugger;
     
     //return this.currentUserSubject.value;
-    return this.currentUser = localStorage.getItem('token');
+    return this.token = localStorage.getItem('token');
   }
-
+/*
+  getSocialUser() : Observable<any> {
+    return 
+  }
+*/
 
 }

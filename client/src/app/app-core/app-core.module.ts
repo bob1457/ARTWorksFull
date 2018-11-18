@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToolbarComponent } from './toolbar/toolbar.component';
+import { NavbarComponent } from './navbar/navbar.component';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { RouterModule } from '@angular/router';
 import { SidenavComponent } from './sidenav/sidenav.component';
@@ -15,7 +15,7 @@ import { BannerComponent } from './banner/banner.component';
     AppMaterialModule,
     RouterModule
   ],
-  exports: [ToolbarComponent, SidenavComponent],
-  declarations: [ToolbarComponent, SidenavComponent]
+  exports: [NavbarComponent, SidenavComponent],
+  declarations: [NavbarComponent, SidenavComponent]
 })
 export class AppCoreModule { }

@@ -1,16 +1,3 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<!--
-<mat-toolbar [ngClass]="{'home_toolbar':href === '/'}">
-  <div class="logo">
-    <img src="http://placehold.it/50x50" width="50px" height="50px" />
-  </div>
-</mat-toolbar>
-[ngStyle]="{'background-color':herf === '/'? 'transparent':'purple'}">
-  <app-toolbar ></app-toolbar>
-
-
-  <app-toolbar></app-toolbar>-->
-
 <mat-drawer-container class="app-side-container" [ngClass]="(router.url != '/')? 'bg2': 'bg'">
     <mat-drawer #drawer class="app-sidenav" mode="side" style="background-color: #7b1fa2; color:white;" [opened]="opened" [mode]="mode" fxLayout="column">
         <div fxLayout="row" fxLayoutAlign="start center">
@@ -77,19 +64,8 @@
 
     </mat-drawer>
     <mat-drawer-content>
-        <!-- Main Content with toolbar and side nav panel -->
-
-        <!--<app-toolbar></app-toolbar>
-        <div style="text-align:center; margin-top: 5em;">
-            <img width="200" alt="Angular Logo" src="../../assets/images/logo.png">
-
-        </div>
-        <div style="text-align:center; margin-top: 5em;" class="">
-            <a href="" [routerLink]="['/gallery']" class="enterlink">View Gallery</a>
-        </div>
-        -->
-
-        <mat-toolbar class="main-toolbar mat-elevation-z2" fxLayout="row" fxLayoutAlign="start center" [ngClass]="(router.url != '/')? 'toolbar2': 'toolbar'">
+        <!--<app-navbar></app-navbar>-->
+        <mat-toolbar class="main-toolbar mat-elevation-z2" fxLayout="row" fxLayoutAlign="start center" [ngClass]="(router.url != '/')? 'toolbar2': 'toolbar'" >
 
             <div [ngClass]="(router.url != '/')? 'logo': 'no-logo'">
                 <img src="../assets/images/logo-sm.png" />
@@ -110,7 +86,13 @@
 
             <!--<mat-icon class="toolbar-icon" color="primary">account_circle</mat-icon>-->
             <div *ngIf="loggedIn">
-                <button mat-button [matMenuTriggerFor]="menu" *ngIf="user"><img src="{{serverUrl}}/avatars{{user.avatar}}" title="{{username}}" class="img-circle" style="margin-left: 20px; vertical-align: top; " ></button>
+                <button mat-button [matMenuTriggerFor]="menu" *ngIf="currentUser">
+                    <img attr.src="{{serverUrl}}/avatars{{currentUser.avatar}}" title="{{currentUser.username}}" class="img-circle" style="margin-left: 20px; vertical-align: top; " >
+                </button> <!-- {{serverUrl}}/avatars{{user.avatar}}    {{avatarUrl}}
+                     
+                <button mat-button [matMenuTriggerFor]="menu" *ngIf="!currentUser">
+                        <img src="{{serverUrl}}/avatars{{avatarUrl}}" title="{{username}}" class="img-circle" style="margin-left: 20px; vertical-align: top; " >
+                    </button>-->
                 <mat-menu #menu="matMenu" yPosition="below" xPosition="before" [overlapTrigger]="false">
                     <button mat-menu-item [routerLink]="['/profile']">
                     <mat-icon style="color: black;">dialpad</mat-icon>
@@ -147,6 +129,8 @@
         <router-outlet></router-outlet>
 
     </mat-drawer-content>
+    
+
 </mat-drawer-container>
 
 <!-- <router-outlet></router-outlet>-->

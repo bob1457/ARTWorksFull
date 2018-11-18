@@ -1,3 +1,4 @@
+import { StateService } from './../../app-core/services/state.service';
 import { element } from 'protractor';
 import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -27,12 +28,19 @@ export class LoginComponent implements OnInit {
   user;
   email: string = '';
 
+  fbUser;
+
   constructor( private http: HttpClient,
               private socialAuthService: AuthService,
               private router: Router,
               public dialog: MatDialog,
               private messageService: MessageService,
-              private userService: UserService) { }
+              private stateService: StateService,
+              private userService: UserService) {
+                if(this.userService.currentUserToken){
+                  this.router.navigate(['/profile']);
+                }
+               }
 
   ngOnInit() {
   }
@@ -40,6 +48,7 @@ export class LoginComponent implements OnInit {
   /** Facebook Authentication */
 
   public facebookLogin() {
+    console.log('login with Facebook!');
     let socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (userData) => {
@@ -51,7 +60,8 @@ export class LoginComponent implements OnInit {
           this.isLoggedIn = true;
           this.login.emit(this.isLoggedIn);
           console.log(this.isLoggedIn);*/
-          console.log(userData);
+          console.log('user data returned on login: ' + userData);
+          localStorage.setItem('token', userData.token);
           //this.userService.setLoginStatus(true);
           // console.log(this.isLoggedIn);
           this.sendToRestApiMethod(userData.token); // It needs to verify the token on server side and get user data for server rest api
@@ -79,15 +89,25 @@ export class LoginComponent implements OnInit {
 
                        this.messageService.setLoggedIn(true);
                        this.messageService.setSocialLogin(true);
-                       //save the token that you got from your REST API in your preferred location i.e. as a Cookie or LocalStorage as you do with normal login
-                       localStorage.setItem('token', JSON.stringify(data));
 
-                       console.log('Facebook token has been verified: ' + data);
+                       this.fbUser = data;
+                       //save the token that you got from your REST API in your preferred location i.e. as a Cookie or LocalStorage as you do with normal login
+                       //localStorage.setItem('token', JSON.stringify(data));
+                       localStorage.setItem('token', this.fbUser.token);
+                       console.log('new token: ' + this.fbUser.token);
+                       console.log('social img' + this.fbUser.picture.data.url);
+
+                       //Cache the facebook user data
+                       localStorage.setItem('fbname', this.fbUser.name);
+                       localStorage.setItem('fbemail', this.fbUser.email);
+                       localStorage.setItem('fbimg', this.fbUser.picture.data.url);
+
+                       console.log('Facebook token has been verified: ' + JSON.stringify(this.fbUser.token));
         }, onFail => {
                        //login was unsuccessful
                        //show an error message
                        //console.log(params);
-                       console.log('error occured');
+                       console.log('error occurred');
                }
         );
   }
@@ -97,10 +117,12 @@ export class LoginComponent implements OnInit {
 
   // Local account login
   onSubmit(form: NgForm) {
+    console.log('login with local account!');
     debugger;
     console.log(form.value);  // form.value.xxxx
     this.userService.login(form.value)
       .subscribe(
+        /*
         res => {
           if(!res.token){
             this.errMsg = "Authentication failed!";
@@ -108,15 +130,29 @@ export class LoginComponent implements OnInit {
             //console.log(res); // including user data
             this.messageService.setLoggedIn(true);
             this.messageService.setSocialLogin(false);
-            this.user = res;
-            console.log(this.user.userData);
-            localStorage.setItem('token', JSON.stringify(res.token));
-            //localStorage.setItem('_id', this.user.userDate._id);
-            localStorage.setItem('avatar', res.userData.avatar);
-            localStorage.setItem('username', res.userData.username);
-            //console.log(localStorage.getItem('token'));
+
+            
             this.router.navigate(['/profile']);
           }
+        },*/
+        res => {
+          if(!res.token){
+            this.errMsg = "Authentication failed!";
+            console.log(this.errMsg);
+          } else {
+            this.messageService.setLoggedIn(true);
+            this.messageService.setSocialLogin(false);
+
+            //this.stateService.setUser(res.user);
+
+            //localStorage.setItem('username', res.user.username);
+            //localStorage.setItem('avatar', res.user.avatar);
+            console.log(res);
+            this.user = res.user;
+            console.log(this.user);  
+            
+            this.router.navigate(['/profile']);
+          }          
         },
         err => {
           console.log(err)

@@ -1,7 +1,7 @@
 .about-banner {
     /* background-color: blueviolet;margin-top: -22px;*/
-    height: 15em;
-    /**/background: url('../../../assets/images/b5.jpg') no-repeat;
+    height: 20em; /*15em;*/
+    background: url('../../../assets/images/b5.jpg') no-repeat;
     background-size: cover;
 }
 

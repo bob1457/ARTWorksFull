@@ -24,6 +24,9 @@ var FbUserSchema = new Schema({
     name: {
         type: String
     },
+    img: {
+        type: String
+    },
     id: {
         type: String
     }
