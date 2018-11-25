@@ -15,7 +15,7 @@ export class UserService {
   public token: string;
 
   //private loggedInStatus = JSON.parse(localStorage.getItem('loggedIn') || 'false' );
-  private baseUrl = environment.apiBaseUrl;
+  private baseUrl = environment.apiBaseUrl; //'http://localhost:58088'; // 
 
 
 

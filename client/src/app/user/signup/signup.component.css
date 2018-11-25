@@ -21,4 +21,9 @@ signup-card {
 .msg {
     margin-top: 25px;
     text-align: center;
+    color: blue;
+}
+
+.pl-2 {
+    margin-top: 20px;
 }

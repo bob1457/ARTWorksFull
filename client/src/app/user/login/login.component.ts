@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
   errMsg: string = '';
   user;
   email: string = '';
+  loading: Boolean = false;
 
   fbUser;
 
@@ -117,6 +118,7 @@ export class LoginComponent implements OnInit {
 
   // Local account login
   onSubmit(form: NgForm) {
+    this.loading = true;
     console.log('login with local account!');
     debugger;
     console.log(form.value);  // form.value.xxxx
@@ -137,6 +139,7 @@ export class LoginComponent implements OnInit {
         },*/
         res => {
           if(!res.token){
+            this.loading = false;
             this.errMsg = "Authentication failed!";
             console.log(this.errMsg);
           } else {

@@ -13,6 +13,7 @@ export class SignupComponent implements OnInit {
   message: string = '';
   sigup_done: boolean = false;
   link: string = '<a href="/login">Login now</a>';
+  loading: boolean = false;
 
   constructor(private userService: UserService,
               private router: Router) { }
@@ -21,15 +22,18 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    console.log(form.value);
+    this.loading = true;
+    //console.log(form.value);
     debugger;
     /**/this.userService.register(form.value).subscribe(
       res => {
+        this.loading = false;
         console.log(res);
         this.message = 'Signup successful!'
       },
       err => {console.log(err)
       this.message = 'Signup failed: error: ' + err;
+      this.loading = false;
       });
     form.resetForm();
     this.sigup_done = true;
