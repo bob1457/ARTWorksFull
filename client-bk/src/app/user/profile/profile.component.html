@@ -1,0 +1,90 @@
+<div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center">
+    <div fxFlex="25%"></div>
+    <div class="" fxFlex="50%" style="margin-top: 30px;">
+        <mat-card class="signup-card" style="margin-left: 10px;margin-right: 10px; margin-bottom: 25px;">
+            <!--
+            <mat-card-header>
+                <div mat-card-avatar class="signup-header-image">
+                    <img src="../../../assets/images/signup.png">
+                </div>
+                <mat-card-title style="margin-left: 25px;">Register</mat-card-title>
+                <mat-card-subtitle style="margin-left: 25px;">Create a free account to start</mat-card-subtitle>
+            </mat-card-header>-->
+            <img mat-card-image src="../../../assets/images/profile-banner.jpg" alt=""> <!--  -->
+            <mat-card-content style="text-align: center; margin-top: -60px;" >
+                <div *ngIf="currentUser">
+                    <img src="{{serverUrl}}/avatars/md{{currentUser.avatar}}" style="border-radius: 50%; border: 4px solid white;">
+                </div>
+                <div *ngIf="social">
+                    <img src="{{fbPicture}}" style="border-radius: 50%; border: 4px solid white; width: 80px; height: 80px;">
+                </div>
+                <mat-tab-group>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            <mat-icon class="example-tab-icon">contacts</mat-icon>
+                            &nbsp; Profile
+                        </ng-template>
+<!-- Local Login Profile -->
+                        <div class="tab-content" *ngIf="!social">
+                            <!--<div>
+                            User Profile
+                          </div>-->
+
+                            <div fxFlex="30%" style="text-align: left;">
+                                <img src="http://placehold.it/100x100" style="border-radius: 50%; border: 4px solid white; margin-left: 15px">
+                            </div>
+                            <div fxFlex="70%">
+                                <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" #f="ngForm" (ngSubmit)="onSubmit(f)" class="signup-form">
+                                    <mat-form-field class="signup-full-width">
+                                        <input type="email" matInput placeholder="Your email" ngModel name="email" #emailInput="ngModel" email required>
+                                        <mat-hint>Should be a valid email address</mat-hint>
+                                        <mat-error *ngIf="emailInput.hasError('required')">Email is required</mat-error>
+                                        <mat-error *ngIf="!emailInput.hasError('required')">Email is invalid</mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field class="signup-full-width" hintLabel="Should be at least 6 characters long">
+                                        <input type="password" matInput placeholder="Your password" ngModel name="password" required minLength="6" #pwInput="ngModel">
+                                        <mat-hint align="end">{{pwInput.value?.length}} / 6</mat-hint>
+                                    </mat-form-field>
+                                    <mat-form-field class="signup-full-width">
+                                        <input type="password" matInput placeholder="Confirm Your password">
+                                        <mat-error>Must be at least 6 characters long</mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field class="signup-full-width">
+                                        <input type="text" matInput placeholder="Year of birth" ngModel name="birhtyear" required>
+                                    </mat-form-field>
+                                    <mat-checkbox color="primary" ngModel name="agree" required>Agree to the terms and conditions</mat-checkbox>
+                                    <button type="submit" mat-raised-button color="primary" [disabled]="f.invalid">REGISTER</button>
+                                </form>
+                            </div>
+
+                        </div>
+<!-- Social Login Profile -->
+                        <div *ngIf="social">
+                            Social Login Profile
+                        </div>
+
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            <mat-icon class="example-tab-icon">settings</mat-icon>
+                            &nbsp; Settings
+                        </ng-template>
+                        <div class="tab-content">
+                            User Settings
+                        </div>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            <mat-icon class="example-tab-icon">perm_data_setting</mat-icon>
+                            &nbsp; Resources
+                        </ng-template>
+                        <div class="tab-content">
+                            My Resources
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxFlex="25%"></div>

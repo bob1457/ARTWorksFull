@@ -1,0 +1,17 @@
+.about-banner {
+    /* background-color: blueviolet;margin-top: -22px;*/
+    height: 20em; /*15em;*/
+    background: url('../../../assets/images/b5.jpg') no-repeat;
+    background-size: cover;
+}
+
+.banner-text {
+    width: 30%;
+    padding-top: 2em;
+    margin-left: 2em;
+    padding-bottom: 10em;
+}
+
+.about-slogan {
+    text-align: center;
+}
